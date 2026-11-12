@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="light"/>
-<title>WORKFIT | 3D 공장 구조도 에디터 V2.7.2</title>
+<title>WORKFIT | 3D 공장 구조도 에디터 V2.7.3</title>
 <style>
 :root{font-family:"Pretendard","Malgun Gothic",system-ui,sans-serif;color:#243247;background:#eef2f6}
 *{box-sizing:border-box}
@@ -33,7 +33,10 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 .brushRow{margin:10px 0 14px;padding:11px 10px;border:1px solid #dfebf7;border-radius:9px;background:#f4f8fc;display:flex;align-items:center;gap:9px;justify-content:space-between}.brushRow label{font-size:11px;font-weight:700;color:#496079}.brushRow select{width:94px;padding:7px;border-radius:7px;background:white;border:1px solid #cbd9ea;color:#27547e;font-size:11px}.brushRow small{font-size:10px;color:#8493a5}.asset-icon{width:52px;height:48px;display:grid;place-items:center;font-size:29px;color:var(--tone);text-shadow:0 2px 1px #5965742c;filter:drop-shadow(0 5px 2px #24324722)}
 .tip{margin-top:18px;background:#f6f9fd;border:1px solid #e7edf5;border-radius:10px;padding:11px;font-size:10px;line-height:1.75;color:#75869b}
 .actions{display:flex;gap:7px;margin-top:14px}.actions button{border:1px solid #e0e8f1;border-radius:7px;background:#f8fafc;color:#586e83;padding:8px;flex:1;font-size:11px}
-.building .rightPanel{width:0;border:0;opacity:0}.buildModeBar{display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:14px;gap:12px;align-items:center;background:#fff;border:1px solid #bbd8f5;border-radius:10px;padding:9px 13px;box-shadow:0 5px 20px #0f304429;white-space:nowrap;font-size:11px;color:#47617e}.building .buildModeBar{display:flex}.buildModeBar button{border:1px solid #c9ddf3;background:#f1f7ff;border-radius:7px;padding:6px 10px;color:#245f9c;font-weight:700}
+.building .rightPanel{width:0;border:0;opacity:0}.buildModeBar{display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:14px;gap:12px;align-items:center;background:#fff;border:1px solid #bbd8f5;border-radius:10px;padding:9px 13px;box-shadow:0 5px 20px #0f304429;white-space:nowrap;font-size:11px;color:#47617e}.building .buildModeBar{display:flex}
+/* Existing-object move: preserve 3D viewport size and camera framing. */
+.moving-edit .buildModeBar{display:flex}
+.moving-edit .rightPanel{opacity:.62;pointer-events:none}.buildModeBar button{border:1px solid #c9ddf3;background:#f1f7ff;border-radius:7px;padding:6px 10px;color:#245f9c;font-weight:700}
 .editTools{position:absolute;z-index:4;display:flex;gap:5px;transform:translateX(-50%);background:#fff;padding:5px;border:1px solid #afcce8;border-radius:10px;box-shadow:0 5px 16px #1f344b3b}.editTools[hidden]{display:none!important}.editTools button{width:34px;height:30px;border:0;background:#eef5fc;color:#2a6fb0;border-radius:7px;font-size:19px}.editTools button.danger{background:#fff0f0;color:#bb4352}
 #toast{position:absolute;z-index:15;left:50%;top:12%;transform:translate(-50%,-9px);max-width:80%;background:#213b56;color:white;box-shadow:0 8px 24px #2637483d;padding:11px 15px;border-radius:8px;font-size:12px;line-height:1.5;opacity:0;pointer-events:none;transition:.18s}.visible#toast{opacity:1;transform:translate(-50%,0)}#toast.bad{background:#8b3145}
 .statusbar{height:32px;flex:none;background:white;border-top:1px solid #e1e9f3;padding:8px 16px;font-size:11px;color:#6b7f93}
@@ -64,7 +67,7 @@ dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:
 </head>
 <body>
 <div id="app">
-<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.7.2 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
+<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.7.3 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
 <div class="topActions"><input id="projectName" value="도입기업_1층공장" aria-label="프로젝트 이름"/><button id="helpBtn" type="button" aria-haspopup="dialog">? 이용 방법</button><button id="openBtn">내 프로젝트</button><button class="primary" id="saveBtn">저장</button><button id="pngBtn">PNG 출력</button><input type="file" id="filePicker" accept=".workfit,.json,application/json" hidden/></div></header>
 <div class="workspace"><aside class="leftbar"><label for="gridSelect">그리드</label><select id="gridSelect"><option value="33x33">33×33</option><option value="44x44" selected>44×44</option><option value="33x44">33×44</option><option value="44x55">44×55</option></select><div class="spacer"></div><button id="undoBtn">↶ 되돌리기</button><button id="eraseBtn">⌫ 지우기</button><button id="resetBtn">초기화</button></aside>
 <main id="viewport"><div class="viewHead"><strong>▣ 1층 공장 레이아웃</strong><small id="modeName">3D 장면 초기화 중</small></div><div class="editorFooter">WASD 화면 이동 · 좌드래그 좌우 회전 · 우드래그 상하 시점 · 휠 확대/회전 · ESC 종료 · 자세한 조작은 상단 ? 이용 방법</div><div class="buildModeBar"><span id="editorLabel">클릭하여 설치</span><button id="exitBtn">ESC · 종료</button></div>
@@ -129,7 +132,7 @@ dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:
 <label for="exportResolution">해상도</label><select id="exportResolution"><option value="1920">1920 × 1080</option><option value="3840" selected>3840 × 2160 (4K)</option></select>
 <div class="end"><button id="exportClose">취소</button><button id="exportConfirm" class="confirm">PNG 내보내기</button></div></dialog>
 <script type="module">
-/* WORKFIT Factory Layout Editor V2.7.2 - Three.js r187
+/* WORKFIT Factory Layout Editor V2.7.3 - Three.js r187
    Copyright (c) OpenAI, project implementation.
    Three.js MIT license; loaded from public CDN at runtime.
 */
@@ -1298,6 +1301,7 @@ function confirmEditing(){
   markSelected();updateStatus();scheduleDraw();
 }
 function beginBuild(name,type){
+ if(s.moving)restoreMove();
  s.tool={kind:name==='floor'&&type==='parking'?'parking':name==='floor'?'floor':name==='wall'?'wall':'object',category:name,variant:type,rotation:0};
  $('brushRow').style.display=name==='floor'&&type==='parking'?'none':(name==='floor'||name==='wall')?'flex':'none';
  if(s.editing)cancelEditing();
@@ -1309,10 +1313,12 @@ function exitBuild(){
  if(s.moving){restoreMove();}
  if(s.editing)cancelEditing();
  s.tool=null;s.erase=false;s.selection=null;s.editing=null;
- $('app').classList.remove('building');$('editorLabel').textContent='선택한 블록을 배치하세요';
+ $('app').classList.remove('building','moving-edit');$('editorLabel').textContent='선택한 블록을 배치하세요';
  clearGroup(ghostGroup);markSelected();updateStatus();scheduleDraw();
 }
 function startMove(){
+ // V2.7.3: do not collapse the right sidebar here: resizing the WebGL viewport
+ // shifts the on-screen position of the entire floor while pressing Space.
  if(!s.selection)return;
  const t=s.selection,orig=t.kind==='floor'?s.floors.get(t.id):t.kind==='wall'?s.walls.get(t.id):s.objects.get(t.id);
  if(t.kind==='floor'&&orig==='parking'){
@@ -1326,7 +1332,7 @@ function startMove(){
    s.selection=null;markSelected();
    for(const p of cs)toggleFloorVisible(tileKey(p.x,p.z),false);
    toggleParkingVisible(slot.id,false);
-   $('app').classList.add('building');$('editorLabel').textContent='주차장 이동 · 휠 좌/우 90° · 클릭 확정 · ESC 취소';
+   $('app').classList.add('moving-edit');$('editorLabel').textContent='주차장 이동 · 휠 좌/우 90° · 클릭 확정 · ESC 취소';
    updateStatus();makeGhostGroup();scheduleDraw();return;
  }
 
@@ -1342,7 +1348,7 @@ function startMove(){
  s.selection=null;markSelected();
  const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):null;
  if(t.kind==='floor')toggleFloorVisible(t.id,false);else if(grp)grp.visible=false;
- $('app').classList.add('building');$('editorLabel').textContent='이동 중 · 클릭 확정 · 휠 좌/우 90° · Del 삭제 · ESC 취소';
+ $('app').classList.add('moving-edit');$('editorLabel').textContent='이동 중 · 클릭 확정 · 휠 좌/우 90° · Del 삭제 · ESC 취소';
  updateStatus();makeGhostGroup();scheduleDraw();
 }
 function restoreMove(){
@@ -1353,7 +1359,7 @@ function restoreMove(){
  else if(t.kind==='parking'){
   const slot=s.parkingSlots.get(t.id);if(slot){for(const c of parkingCells(slot))toggleFloorVisible(tileKey(c.x,c.z),true);toggleParkingVisible(slot.id,true)}
  }else if(grp)grp.visible=true;
- s.moving=null;s.selection=null;s.editing=null;clearGroup(ghostGroup);clearGroup(highlightGroup);$('app').classList.remove('building');updateStatus();scheduleDraw();
+ s.moving=null;s.selection=null;s.editing=null;clearGroup(ghostGroup);clearGroup(highlightGroup);$('app').classList.remove('moving-edit');updateStatus();scheduleDraw();
 }
 function resolveClick(clientX,clientY){
  const world=pointerToWorld(clientX,clientY),cell=hitCell(world);
@@ -1384,7 +1390,7 @@ function resolveClick(clientX,clientY){
           const o=s.objects.get(t.id);o.x=cell.x;o.z=cell.z;o.rotation=t.rotation??o.rotation;
         }
       });
-      s.moving=null;s.editing=null;s.selection=null;s.tool=null;$('app').classList.remove('building');$('editorLabel').textContent='설치물 선택 모드';
+      s.moving=null;s.editing=null;s.selection=null;s.tool=null;$('app').classList.remove('moving-edit');$('editorLabel').textContent='설치물 선택 모드';
       clearGroup(ghostGroup);updateStatus();scheduleDraw();return;
    }
    if(activity.kind==='parking'){
@@ -1599,7 +1605,7 @@ function pan(dx,dy){
 }
 function zoomBy(factor){s.zoom=THREE.MathUtils.clamp(s.zoom*factor,.40,6);scheduleDraw()}
 function setBuildMode(mode){
- if(mode==='erase'){if(s.editing)cancelEditing();s.tool=null;s.erase=true;s.selection=null;s.editing=null;s.moving=null;$('app').classList.add('building');$('editorLabel').textContent='삭제 모드 · 클릭해서 삭제 · ESC로 종료';makeGhostGroup();markSelected();updateStatus();return}
+ if(mode==='erase'){if(s.moving)restoreMove();if(s.editing)cancelEditing();s.tool=null;s.erase=true;s.selection=null;s.editing=null;s.moving=null;$('app').classList.add('building');$('editorLabel').textContent='삭제 모드 · 클릭해서 삭제 · ESC로 종료';makeGhostGroup();markSelected();updateStatus();return}
 }
 function undo(){
  const raw=s.history.pop();if(!raw){toast('되돌릴 작업이 없어요.');return}
@@ -1682,7 +1688,7 @@ function onKeyDown(e){
   if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||document.querySelector('dialog[open]'))return;
   const k=e.key.toLowerCase();
   if(e.key==='Escape'){
-    if(s.moving){restoreMove();s.tool=null;$('app').classList.remove('building');}
+    if(s.moving){restoreMove();s.tool=null;$('app').classList.remove('moving-edit');}
     else if(s.editing)cancelEditing();
     else exitBuild();
     e.preventDefault();return;
