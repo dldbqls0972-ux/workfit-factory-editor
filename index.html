@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="light"/>
-<title>WORKFIT | 3D 공장 구조도 에디터 V2.5</title>
+<title>WORKFIT | 3D 공장 구조도 에디터 V2.7.1</title>
 <style>
 :root{font-family:"Pretendard","Malgun Gothic",system-ui,sans-serif;color:#243247;background:#eef2f6}
 *{box-sizing:border-box}
@@ -44,14 +44,14 @@ dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:
 </head>
 <body>
 <div id="app">
-<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.5 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
+<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.7.1 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
 <div class="topActions"><input id="projectName" value="도입기업_1층공장" aria-label="프로젝트 이름"/><button id="openBtn">내 프로젝트</button><button class="primary" id="saveBtn">저장</button><button id="pngBtn">PNG 출력</button><input type="file" id="filePicker" accept=".workfit,.json,application/json" hidden/></div></header>
 <div class="workspace"><aside class="leftbar"><label for="gridSelect">그리드</label><select id="gridSelect"><option value="33x33">33×33</option><option value="44x44" selected>44×44</option><option value="33x44">33×44</option><option value="44x55">44×55</option></select><div class="spacer"></div><button id="undoBtn">↶ 되돌리기</button><button id="eraseBtn">⌫ 지우기</button><button id="resetBtn">초기화</button></aside>
-<main id="viewport"><div class="viewHead"><strong>▣ 1층 공장 레이아웃</strong><small id="modeName">3D 장면 초기화 중</small></div><div class="editorFooter">WASD 화면 이동 · 좌드래그 수평 회전 · 우드래그 상하 각도 · 우더블클릭 초기화 · R 설치 방향 · 휠 확대</div><div class="buildModeBar"><span id="editorLabel">클릭하여 설치</span><button id="exitBtn">ESC · 종료</button></div><div id="editTools" class="editTools" hidden><button id="rotateLeft" title="왼쪽 회전" aria-label="왼쪽 90도 회전">↶</button><button id="rotateRight" title="오른쪽 회전" aria-label="오른쪽 90도 회전">↷</button><button class="danger" id="removeBtn" title="설치물 삭제" aria-label="삭제">×</button></div>
+<main id="viewport"><div class="viewHead"><strong>▣ 1층 공장 레이아웃</strong><small id="modeName">3D 장면 초기화 중</small></div><div class="editorFooter">WASD 화면 이동 · 좌드래그 수평 회전 · 우드래그 상하 각도 · 우더블클릭 초기화 · 휠: 일반 모드 확대 / 편집 중 90° 회전 · Space 이동 · Del 삭제</div><div class="buildModeBar"><span id="editorLabel">클릭하여 설치</span><button id="exitBtn">ESC · 종료</button></div>
 <div class="viewControls"><button id="zoomOut" title="축소">−</button><button id="zoomIn" title="확대">+</button><button id="resetView" title="기본 각도">⟳</button><button id="topViewBtn" title="수직에서 타일이 정사각형인지 확인">▦</button><button id="fitBtn" title="전체 보기">⌗</button></div><div id="toast"></div>
 <div id="loadingOverlay" class="loading"><div class="loadingCard"><div style="font-size:33px">🏗️</div><h3 id="loadingLabel">실제 3D 엔진을 준비하고 있어요</h3><p id="loadingDetail">Three.js 렌더러 초기화 중...</p><button id="loadingRetry" hidden>다시 시도</button></div></div>
 </main>
-<aside class="rightPanel"><nav class="categoryRail"><button class="active" data-category="floor"><span class="catIcon">▱</span>바닥</button><button data-category="wall"><span class="catIcon">▥</span>벽</button><button data-category="box"><span class="catIcon">📦</span>박스</button><button data-category="vehicle"><span class="catIcon">🚜</span>차량</button><button data-category="person"><span class="catIcon">🦺</span>인물</button></nav><section class="templatePanel"><h2 id="sideTitle">바닥 템플릿</h2><p class="desc">블록을 선택하면 메뉴가 접히고 건설 모드가 시작돼요.</p><div id="assetList" class="assetGrid"></div><div class="brushRow" id="brushRow"><label for="brushSelect" id="brushLabel">한 번에 칠하기</label><select id="brushSelect"><option value="1">1×1</option><option value="2">2×2</option><option value="3">3×3</option><option value="4">4×4</option></select></div><div class="tip"><b>배치 규칙</b><br>원근 투영: 가까운 바닥이 크게, 먼 바닥이 작게 보여요. ▦ 버튼으로 수직 정사각형 보기.<br>바닥 1×1~4×4칸 묶음, 주차장 1×2칸(흰 테두리) · 벽 모서리 1~4칸 연속.<br>차량은 1×1 또는 1×2, 사람은 1명당 1칸. 창고 랙은 1×1·1×2·2×2 점유.<br>모든 설치물은 바닥 타일이 있어야 배치 가능하며 R키로 회전해요.</div></section></aside></div>
+<aside class="rightPanel"><nav class="categoryRail"><button class="active" data-category="floor"><span class="catIcon">▱</span>바닥</button><button data-category="wall"><span class="catIcon">▥</span>벽</button><button data-category="box"><span class="catIcon">📦</span>박스</button><button data-category="vehicle"><span class="catIcon">🚜</span>차량</button><button data-category="person"><span class="catIcon">🦺</span>인물</button><button data-category="conveyor"><span class="catIcon">⇢</span>컨베이어</button><button data-category="facility"><span class="catIcon">⚙</span>설비·비품</button><button data-category="robot"><span class="catIcon">🦾</span>로봇</button></nav><section class="templatePanel"><h2 id="sideTitle">바닥 템플릿</h2><p class="desc">블록을 선택하면 메뉴가 접히고 건설 모드가 시작돼요.</p><div id="assetList" class="assetGrid"></div><div class="brushRow" id="brushRow"><label for="brushSelect" id="brushLabel">한 번에 칠하기</label><select id="brushSelect"><option value="1">1×1</option><option value="2">2×2</option><option value="3">3×3</option><option value="4">4×4</option></select></div><div class="tip"><b>배치 규칙</b><br>원근 투영: 가까운 바닥이 크게, 먼 바닥이 작게 보여요. ▦ 버튼으로 수직 정사각형 보기.<br>바닥 1×1~4×4칸 묶음, 주차장 1×2칸(흰 테두리) · 벽 모서리 1~4칸 연속.<br>차량은 1×1 또는 1×2, 사람은 1명당 1칸. 창고 랙은 1×1·1×2·2×2 점유.<br>컨베이어·설비·로봇은 모두 1칸. 계단만 바닥 타일 없이 설치할 수 있어요.<br>나머지 설치물은 바닥 타일이 있어야 배치 가능해요. 휠 위/아래: 좌/우 90° 회전 · Space 이동 · Del 삭제.</div></section></aside></div>
 <footer class="statusbar"><span id="statusText">44×44 · 1,936칸</span></footer>
 </div>
 <dialog id="projectDialog"><h3>📁 내 공장 프로젝트 보관함</h3><p>현재 회사 PC의 이 브라우저에 저장됩니다. 저장된 구조도는 목록에서 선택해 다시 수정할 수 있어요.</p>
@@ -66,7 +66,7 @@ dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:
 <label for="exportResolution">해상도</label><select id="exportResolution"><option value="1920">1920 × 1080</option><option value="3840" selected>3840 × 2160 (4K)</option></select>
 <div class="end"><button id="exportClose">취소</button><button id="exportConfirm" class="confirm">PNG 내보내기</button></div></dialog>
 <script type="module">
-/* WORKFIT Factory Layout Editor V2.4 - Three.js r187
+/* WORKFIT Factory Layout Editor V2.7.1 - Three.js r187
    Copyright (c) OpenAI, project implementation.
    Three.js MIT license; loaded from public CDN at runtime.
 */
@@ -110,12 +110,24 @@ const ITEMS = {
     {id:'rackSmall',label:'창고 랙 · 1칸',icon:'▤',color:'#69849a'},{id:'rackMedium',label:'창고 랙 · 1×2',icon:'▤',color:'#547589'},{id:'rackLarge',label:'창고 랙 · 2×2',icon:'▥',color:'#536d83'},{id:'warehouseSet',label:'창고 세트 · 2×2',icon:'▦',color:'#668396'}],
   vehicle:[{id:'forklift',label:'지게차',icon:'🚜',color:'#f0bf36'},{id:'cart',label:'운반차 · 1×2',icon:'🛺',color:'#f0bf36'},{id:'miniCart',label:'소형 운반차 · 1칸',icon:'🛻',color:'#f3bd2c'},{id:'truck',label:'트럭 · 1×2',icon:'🚚',color:'#d9e1e8'},{id:'passenger',label:'승용차 · 1×2',icon:'🚙',color:'#478fbe'},{id:'handlift',label:'핸드리프트',icon:'🛒',color:'#e1b73e'},{id:'elcart',label:'엘카트',icon:'🛒',color:'#26a06d'}],
   person:[{id:'cleanWhite',label:'방진복 · 흰색',icon:'♙',color:'#e6ebf0'},{id:'cleanOrange',label:'방진복 · 주황',icon:'♙',color:'#ed8b26'},{id:'cleanMint',label:'방진복 · 민트',icon:'♙',color:'#76bfa4'},{id:'cleanNavy',label:'방진복 · 남색',icon:'♙',color:'#354c70'},
-    {id:'worker',label:'안전모 작업자',icon:'♟',color:'#59738d'},{id:'manager',label:'도면 보는 관리자',icon:'♟',color:'#283e58'},{id:'inspector',label:'설비 점검자',icon:'♟',color:'#68808f'},{id:'vest',label:'안전조끼 작업자',icon:'♟',color:'#ee9b37'},{id:'visitor',label:'현장 방문자',icon:'♟',color:'#424a58'}]
+    {id:'worker',label:'안전모 작업자',icon:'♟',color:'#59738d'},{id:'manager',label:'도면 보는 관리자',icon:'♟',color:'#283e58'},{id:'inspector',label:'설비 점검자',icon:'♟',color:'#68808f'},{id:'vest',label:'안전조끼 작업자',icon:'♟',color:'#ee9b37'},{id:'visitor',label:'현장 방문자',icon:'♟',color:'#424a58'}],
+  conveyor:[{id:'convStraight',label:'직선 컨베이어',icon:'⇢',color:'#7aa8c6'},
+    {id:'convCurve',label:'곡선 컨베이어',icon:'↱',color:'#6ba5bd'},
+    {id:'convEnd',label:'종점 컨베이어',icon:'⊣',color:'#9aaec1'},
+    {id:'convBranch',label:'분기형 컨베이어',icon:'⊤',color:'#77a6b8'}],
+  facility:[{id:'waterTank',label:'물탱크',icon:'◉',color:'#99b8c5'},
+    {id:'meetingDesk',label:'벽붙이 회의 테이블',icon:'▣',color:'#b48b69'},
+    {id:'extinguisher',label:'소화기',icon:'🧯',color:'#d73f3b'},
+    {id:'stairs',label:'계단 (2F·3F)',icon:'▥',color:'#93a9bb'}],
+  robot:[{id:'robot6axis',label:'6축 산업용 로봇',icon:'🦾',color:'#edaa41'},
+    {id:'robotScara',label:'스카라 로봇',icon:'⚙',color:'#6b9db4'},
+    {id:'robotCobot',label:'협동로봇',icon:'🦾',color:'#a1b8ca'},
+    {id:'robotPick',label:'픽앤플레이스 로봇',icon:'⊞',color:'#6da1b4'}]
 };
-const CATEGORIES = {floor:'바닥',wall:'벽',box:'박스',vehicle:'차량',person:'인물'};
+const CATEGORIES = {floor:'바닥',wall:'벽',box:'박스',vehicle:'차량',person:'인물',conveyor:'컨베이어',facility:'설비·비품',robot:'로봇'};
 const s = {
   cols:44, rows:44, floors:new Map(), parkingSlots:new Map(), walls:new Map(), objects:new Map(), serial:1,
-  category:'floor', variant:'basic', tool:null, selection:null, moving:null, erase:false,
+  category:'floor', variant:'basic', tool:null, selection:null, editing:null, moving:null, erase:false,
   yaw:Math.PI/4, elevation:THREE.MathUtils.degToRad(55), zoom:1.15, target:new THREE.Vector3(22,0,22), brushSize:1, currentProjectId:null, topViewRestore:null,
   hover:null, hoverEdge:null, mouse:{x:0,y:0}, drag:null,
   exportPending:false, history:[]
@@ -190,7 +202,11 @@ const materials = {
   cleanWhite:mat('#e5e9ee'),cleanOrange:mat('#e9902a'),cleanMint:mat('#7bbfa8'),cleanNavy:mat('#394e71'),
   workerBlue:mat('#617c94'),managerNavy:mat('#2e445e'),inspectorGray:mat('#6e8290'),visitorJacket:mat('#4b5665'),
   hardhat:mat('#f6c84e'),whiteHardhat:mat('#ecf0f5'),safetyVest:mat('#f09a37'),reflective:mat('#dae4e8'),
-  skin:mat('#bba594'),mask:mat('#d5e2ed'),boots:mat('#5c6570'),visor:mat('#90b4c8',{roughness:.25}),clipboard:mat('#a8bacb')
+  skin:mat('#bba594'),mask:mat('#d5e2ed'),boots:mat('#5c6570'),visor:mat('#90b4c8',{roughness:.25}),clipboard:mat('#a8bacb'),
+  conveyorBody:mat('#aebcc9',{metalness:.45,roughness:.44}), conveyorBelt:mat('#6a899a',{roughness:.79}), conveyorEdge:mat('#54728a',{metalness:.3}), roller:mat('#d7e0e5',{metalness:.62}),
+  tankSteel:mat('#bdcbd4',{metalness:.67,roughness:.32}), tankDark:mat('#7195a9',{metalness:.35}), deskWood:mat('#ad845c'), deskSeat:mat('#566b7a'),
+  fireRed:mat('#d63d35',{roughness:.43}), fireHandle:mat('#272d33'), steelStep:mat('#bec9d2',{metalness:.47}), handrail:mat('#71899b',{metalness:.44}),
+  robotOrange:mat('#e8a743',{metalness:.22,roughness:.45}), robotLight:mat('#e1e8ee',{metalness:.24}), robotJoint:mat('#566c7f',{metalness:.5}), robotBlue:mat('#4397bf',{metalness:.27})
 };
 const geomFloor=new THREE.PlaneGeometry(1,1);
 geomFloor.rotateX(-Math.PI/2);
@@ -221,6 +237,10 @@ function footprintCells(x,z,category,variant,rotation=0){
   const [dx,dz]=DIRECTIONS[((rotation%4)+4)%4];return [{x,z},{x:x+dx,z:z+dz}];
 }
 function objectCells(o){return footprintCells(o.x,o.z,o.category,o.variant,o.rotation||0)}
+function needsFloor(category,variant){return !(category==='facility'&&variant==='stairs')}
+function cellsAvailableForObject(cells,category,variant,excludeId=null){
+ return cells.every(c=>inBounds(c)&&(!needsFloor(category,variant)||s.floors.has(tileKey(c.x,c.z)))&&objectAtCell(c,excludeId)===null);
+}
 function parkingCells(p){return footprintCells(p.x,p.z,'parking','parking',p.rotation||0)}
 function inBounds(c){return c.x>=0&&c.z>=0&&c.x<s.cols&&c.z<s.rows}
 function parkingAt(x,z){for(const slot of s.parkingSlots.values())if(parkingCells(slot).some(c=>c.x===x&&c.z===z))return slot;return null}
@@ -234,7 +254,7 @@ function getObjectCenter(o){const cs=objectCells(o);return new THREE.Vector3((cs
 function clearParkingSlot(slot){if(!slot)return;for(const c of parkingCells(slot))if(s.floors.get(tileKey(c.x,c.z))==='parking')s.floors.delete(tileKey(c.x,c.z));s.parkingSlots.delete(slot.id)}
 function clearParkingOverlapping(cells){const ids=new Set();for(const c of cells){const p=parkingAt(c.x,c.z);if(p)ids.add(p.id)}for(const id of ids)clearParkingSlot(s.parkingSlots.get(id))}
 function cleanupUnsupported(){
- for(const [id,o] of s.objects)if(!objectCells(o).every(c=>inBounds(c)&&s.floors.has(tileKey(c.x,c.z))))s.objects.delete(id);
+ for(const [id,o] of s.objects)if(!objectCells(o).every(c=>inBounds(c)&&(!needsFloor(o.category,o.variant)||s.floors.has(tileKey(c.x,c.z)))))s.objects.delete(id);
  for(const [id,w] of s.walls)if(!sideAllowed(edgeOf(w)))s.walls.delete(id);
 }
 
@@ -572,6 +592,226 @@ function buildVehicle(o,ghost=false,valid=true){
  if(!ghost)setEntityRefs(group,'object',o.id);
  return group;
 }
+
+// ----- V2.7: modular factory components, every module occupies exactly ONE grid cell -----
+// Models are geometry-only, free of brand logos and textures. They share the tile's
+// orientation and can be rotated by the V2.6 wheel/Space editing workflow.
+function buildFactoryComponent(o,ghost=false,valid=true){
+ const group=new THREE.Group();
+ const tint=ghost?mat(valid?'#6aafff':'#ef7080',{transparent:true,opacity:.33,depthWrite:false}):null;
+ const steel=tint||materials.conveyorBody,belt=tint||materials.conveyorBelt,rail=tint||materials.conveyorEdge;
+ const bright=tint||materials.roller,dark=tint||materials.robotJoint;
+ const silver=tint||materials.tankSteel, orange=tint||materials.robotOrange;
+ const blue=tint||materials.robotBlue, pale=tint||materials.robotLight;
+ function part(w,h,d,m,x,y,z){return box(group,w,h,d,m,x,y,z)}
+ function cylinder(r1,r2,h,m,x,y,z,sides=18){
+   const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r1,r2,h,sides),m);
+   mesh.position.set(x,y,z);mesh.castShadow=true;mesh.receiveShadow=true;group.add(mesh);return mesh;
+ }
+ function beam(a,b,r,material){
+   const p=new THREE.Vector3(...a),q=new THREE.Vector3(...b),delta=q.clone().sub(p);
+   const mesh=new THREE.Mesh(new THREE.CylinderGeometry(r,r,delta.length(),9),material);
+   mesh.position.copy(p).add(q).multiplyScalar(.5);
+   mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),delta.normalize());
+   mesh.castShadow=true;group.add(mesh);return mesh;
+ }
+ function tube(points,r,m,closed=false){
+   const curve=new THREE.CatmullRomCurve3(points.map(p=>new THREE.Vector3(...p)),closed,'centripetal');
+   const mesh=new THREE.Mesh(new THREE.TubeGeometry(curve,Math.max(12,points.length*4),r,7,closed),m);
+   group.add(mesh);mesh.castShadow=true;return mesh;
+ }
+ function legPair(positions,y=.44){for(const [x,z] of positions)part(.045,y,.045,steel,x,y/2+.04,z)}
+ // Shared conveyor port standard: all four modules have a 0.32-cell belt width,
+ // belt center Y=.52, and connection ports at the centers of cell-edge lines.
+ // A module always fits within ONE floor tile and is rotated in 90-degree steps.
+ const CONVEYOR_WIDTH=.32,CONVEYOR_BELT_Y=.52,CONVEYOR_RAIL_Y=.575;
+ function conveyorStraight(zStart=-.5,zEnd=.5){
+   const length=zEnd-zStart,mid=(zStart+zEnd)/2;
+   part(CONVEYOR_WIDTH,.095,length,belt,0,CONVEYOR_BELT_Y,mid);
+   for(const side of [-1,1])
+     part(.032,.15,length,rail,side*(CONVEYOR_WIDTH/2+.016),CONVEYOR_RAIL_Y,mid);
+   for(const z of [zStart+.070,zEnd-.070]){
+     const roller=cylinder(.034,.034,CONVEYOR_WIDTH-.035,bright,0,.58,z,12);
+     roller.rotation.z=Math.PI/2;
+   }
+ }
+ function conveyorCurved(){
+   // Width and elevation match every straight/terminal/branch segment.
+   // Two open ports: WEST edge (-.5,0) and NORTH edge (0,-.5).
+   // 90-degree curve center (-.5,-.5), R=.5.
+   const N=24,R=.5,w=CONVEYOR_WIDTH,center={x:-.5,z:-.5};
+   const positions=[];
+   for(let i=0;i<=N;i++){
+     const angle=Math.PI/2-(Math.PI/2)*(i/N);
+     positions.push({x:center.x+R*Math.cos(angle),z:center.z+R*Math.sin(angle),angle});
+   }
+   for(let i=0;i<N;i++){
+     const p=positions[i],q=positions[i+1],dx=q.x-p.x,dz=q.z-p.z;
+     const tile=part(w,.095,Math.hypot(dx,dz)+.021,belt,(p.x+q.x)/2,CONVEYOR_BELT_Y,(p.z+q.z)/2);
+     tile.rotation.y=Math.atan2(dx,dz);
+   }
+   // The small flat connector noses end flush with the same port line as a straight.
+   part(.055,.095,w,belt,-.4725,CONVEYOR_BELT_Y,0);
+   part(w,.095,.055,belt,0,CONVEYOR_BELT_Y,-.4725);
+   const inner=positions.map(p=>[center.x+(R-w/2-.016)*Math.cos(p.angle),CONVEYOR_RAIL_Y,center.z+(R-w/2-.016)*Math.sin(p.angle)]);
+   const outer=positions.map(p=>[center.x+(R+w/2+.016)*Math.cos(p.angle),CONVEYOR_RAIL_Y,center.z+(R+w/2+.016)*Math.sin(p.angle)]);
+   tube(inner,.021,rail);tube(outer,.021,rail);
+   for(let i=3;i<N;i+=6){
+     const p=positions[i],angle=p.angle;
+     beam([p.x-(w/2-.03)*Math.cos(angle),.58,p.z-(w/2-.03)*Math.sin(angle)],
+          [p.x+(w/2-.03)*Math.cos(angle),.58,p.z+(w/2-.03)*Math.sin(angle)],.013,bright);
+   }
+ }
+ function conveyorBranch(){
+   // True ㅗ-shaped T junction: full WEST↔EAST crossbar and a SOUTH→CENTER stem.
+   // Port centers: (-.5,0), (+.5,0), (0,+.5). NORTH remains closed.
+   const w=CONVEYOR_WIDTH,offset=w/2+.016;
+   part(1,.095,w,belt,0,CONVEYOR_BELT_Y,0);        // horizontal top of ㅗ
+   part(w,.095,.5,belt,0,CONVEYOR_BELT_Y,.25);     // bottom stem of ㅗ
+   // Outside rail on the north side, with an opening for the south stem.
+   part(1,.15,.032,rail,0,CONVEYOR_RAIL_Y,-offset);
+   for(const side of [-1,1]){
+     const halfLength=(.5-w/2)/2;
+     part(.5-w/2,.15,.032,rail,side*(w/2+halfLength),CONVEYOR_RAIL_Y,offset);
+     part(.032,.15,.5-w/2,rail,side*offset,CONVEYOR_RAIL_Y,(w/2+.5)/2);
+   }
+   // A subtle transverse roller near each open connection.
+   for(const x of [-.43,.43]){
+     const r=cylinder(.031,.031,w-.04,bright,x,.58,0,12);r.rotation.x=Math.PI/2;
+   }
+   const bottom=cylinder(.031,.031,w-.04,bright,0,.58,.43,12);
+   bottom.rotation.z=Math.PI/2;
+ }
+ if(o.category==='conveyor'){
+   if(o.variant==='convCurve')conveyorCurved();
+   else if(o.variant==='convBranch')conveyorBranch();
+   else{
+     conveyorStraight();
+     if(o.variant==='convEnd'){
+       // A blocking end cap only on SOUTH (+Z), preserving the NORTH port.
+       part(CONVEYOR_WIDTH+.055,.30,.050,steel,0,.715,.468);
+       part(CONVEYOR_WIDTH-.045,.06,.042,tint||materials.fireRed,0,.82,.475);
+     }
+   }
+   // Support legs share a common floor height and visual weight.
+   legPair([[-.135,-.32],[.135,-.32],[-.135,.32],[.135,.32]],.43);
+   part(CONVEYOR_WIDTH+.05,.042,.055,steel,0,.19,0);
+   if(o.variant==='convStraight'||o.variant==='convEnd'){
+     const tip=new THREE.Mesh(new THREE.ConeGeometry(.055,.12,3),tint||materials.whiteMetal);
+     tip.rotation.x=Math.PI/2;tip.position.set(0,.59,-.09);group.add(tip);
+   }
+ }else if(o.category==='facility'){
+   if(o.variant==='waterTank'){
+     // Compact vertical factory water tank with pipes, inspection lid and legs.
+     cylinder(.34,.34,1.16,silver,0,.74,0,24);
+     cylinder(.35,.35,.075,tint||materials.tankDark,0,1.34,0,24);
+     cylinder(.12,.12,.10,steel,0,1.43,0,18);
+     cylinder(.35,.35,.065,steel,0,.15,0,24);
+     for(const a of [0,Math.PI/2,Math.PI,3*Math.PI/2]){
+       const x=.27*Math.cos(a),z=.27*Math.sin(a);
+       part(.062,.24,.062,steel,x,.13,z);
+     }
+     beam([.17,1.30,0],[.34,1.30,0],.034,steel);
+     beam([.34,1.30,0],[.34,.80,0],.034,steel);
+     cylinder(.09,.09,.038,tint||materials.tankDark,-.17,.61,-.31,12).rotation.x=Math.PI/2;
+   }else if(o.variant==='meetingDesk'){
+     // One table spans toward the NORTH (-Z) tile edge; two sets can face
+     // each other by rotating one 180° and placing in neighboring cells.
+     part(.83,.062,.47,tint||materials.deskWood,0,.55,-.225);
+     for(const x of [-.35,.35])for(const z of [-.40,-.04])part(.045,.54,.045,steel,x,.285,z);
+     part(.25,.045,.21,tint||materials.deskSeat,0,.39,.275);
+     for(const x of [-.09,.09])for(const z of [.20,.35])part(.027,.36,.027,steel,x,.18,z);
+     part(.26,.35,.045,tint||materials.deskSeat,0,.58,.375);
+     // Small paper and a cup distinguish an office/meeting corner.
+     part(.19,.005,.13,pale,-.19,.587,-.22);
+     cylinder(.036,.036,.065,pale,.19,.61,-.21,12);
+   }else if(o.variant==='extinguisher'){
+     // A genuinely tiny red safety asset, offset close to one wall-side.
+     const red=tint||materials.fireRed,blk=tint||materials.fireHandle;
+     cylinder(.105,.105,.043,blk,.27,.075,-.27,14);
+     cylinder(.071,.071,.34,red,.27,.28,-.27,16);
+     cylinder(.080,.080,.055,red,.27,.475,-.27,16);
+     cylinder(.029,.029,.085,blk,.27,.542,-.27,10);
+     part(.18,.028,.030,blk,.275,.587,-.27);
+     tube([[.29,.54,-.24],[.39,.52,-.20],[.38,.32,-.18]],.014,blk);
+     part(.035,.085,.008,pale,.27,.29,-.344);
+   }else if(o.variant==='stairs'){
+     // Architectural 1-cell stair with EIGHT contiguous solid treads, not
+     // floating bars. The very first tread reaches the floor at the SOUTH edge.
+     // This repairs the black opening/missing bottom step in V2.7.
+     const count=8,landingDepth=.16,stepDepth=(1-landingDepth)/count,baseY=.025,firstTop=.19,lastTop=1.52;
+     for(let i=0;i<count;i++){
+       const topY=firstTop+(lastTop-firstTop)*i/(count-1);
+       const midZ=.5-landingDepth-(i+.5)*stepDepth;
+       const h=topY-baseY;
+       // Solid riser from the floor to the current step's tread.
+       part(.76,h,stepDepth+.003,tint||materials.steelStep,0,baseY+h/2,midZ);
+       part(.78,.022,stepDepth+.003,tint||materials.whiteMetal,0,topY+.009,midZ);
+     }
+     // Floor-level first nosing and upper landing are connected to the steps,
+     // within the same one-cell footprint (no second tile required).
+     part(.80,.065,landingDepth,steel,0,.0575,.5-landingDepth/2);
+     part(.80,.070,.145,steel,0,lastTop+.03,-.425);
+     for(const side of [-.42,.42]){
+       beam([side,.16,.46],[side,1.75,-.47],.023,tint||materials.handrail);
+       for(const [y,z] of [[.16,.45],[.55,.16],[.98,-.08],[1.36,-.33]])
+         beam([side,y,z],[side,y+.33,z],.018,tint||materials.handrail);
+     }
+
+   }
+ }else if(o.category==='robot'){
+   const joint=tint||materials.robotJoint;
+   const base=tint||materials.robotOrange;
+   if(o.variant==='robot6axis'||o.variant==='robotCobot'){
+     const collaborative=o.variant==='robotCobot';
+     const armMat=collaborative?pale:base;
+     cylinder(.23,.28,.15,joint,0,.16,0);
+     cylinder(.17,.16,.24,armMat,0,.33,0);
+     // Three interconnected links + highlighted rotary joint collars.
+     beam([0,.40,0],[.24,.90,-.03],collaborative?.084:.107,armMat);
+     cylinder(.13,.13,.15,joint,.24,.91,-.03,14).rotation.z=Math.PI/2;
+     beam([.24,.91,-.03],[.09,1.26,-.27],collaborative?.075:.092,armMat);
+     cylinder(.105,.105,.16,collaborative?blue:joint,.09,1.27,-.27,14).rotation.x=Math.PI/2;
+     beam([.09,1.27,-.27],[.24,1.36,-.39],.063,armMat);
+     cylinder(.068,.068,.105,joint,.24,1.36,-.39,13);
+     for(const x of [.18,.30])part(.038,.12,.033,steel,x,1.29,-.44);
+     if(collaborative){for(const p of [[0,.43,0],[.24,.90,-.03],[.09,1.27,-.27]])cylinder(.11,.11,.036,blue,...p,14)}
+   }else if(o.variant==='robotScara'){
+     cylinder(.19,.22,.17,joint,-.17,.13,.16);
+     cylinder(.085,.10,.88,steel,-.17,.64,.16);
+     const mid=[.20,1.09,.16],end=[.27,1.09,-.22];
+     beam([-.17,1.09,.16],mid,.090,pale);
+     cylinder(.115,.115,.16,joint,...mid,13);
+     beam(mid,end,.080,pale);
+     cylinder(.095,.095,.12,blue,...end,13);
+     beam([end[0],1.08,end[2]],[end[0],.57,end[2]],.035,joint);
+     part(.20,.04,.20,steel,end[0],.56,end[2]);
+   }else if(o.variant==='robotPick'){
+     // Mini 1-cell pick-and-place gantry with a moving vertical vacuum head.
+     for(const x of [-.36,.36])for(const z of [-.30,.30])part(.055,1.36,.055,steel,x,.68,z);
+     part(.82,.08,.085,joint,0,1.37,-.30);
+     part(.82,.08,.085,joint,0,1.37,.30);
+     part(.105,.09,.69,pale,.12,1.34,0);
+     cylinder(.066,.066,.53,steel,.12,1.02,0,14);
+     part(.30,.035,.29,blue,.12,.76,0);
+     for(const x of [-.02,.26])for(const z of [-.11,.11])cylinder(.031,.031,.042,joint,x,.718,z,9);
+     part(.38,.20,.37,tint||materials.cardboard,-.16,.12,.18);
+   }
+ }
+ const center=getObjectCenter(o);
+ group.position.set(center.x,.028,center.z);
+ group.rotation.y=((o.rotation||0)%4)*Math.PI/2;
+ if(ghost)group.traverse(ch=>{if(ch.isMesh&&ch.material===tint)ch.userData.disposeMaterial=true});
+ else setEntityRefs(group,'object',o.id);
+ return group;
+}
+function buildAsset(o,ghost=false,valid=true){
+ if(o.category==='box')return buildBox(o,ghost,valid);
+ if(o.category==='person')return buildPerson(o,ghost,valid);
+ if(o.category==='vehicle')return buildVehicle(o,ghost,valid);
+ if(['conveyor','facility','robot'].includes(o.category))return buildFactoryComponent(o,ghost,valid);
+ throw new Error('지원하지 않는 자산: '+o.category+' / '+o.variant);
+}
 function buildPerson(o,ghost=false,valid=true){
  // Every variant is ONE person: same silhouette/scale, with no logos or identities.
  const group=new THREE.Group();const kind=o.variant;
@@ -652,7 +892,7 @@ function buildPerson(o,ghost=false,valid=true){
 }
 function rebuildObjects(){
  clearGroup(objectGroup);
- for(const [id,o] of s.objects){const group=o.category==='box'?buildBox(o):o.category==='person'?buildPerson(o):buildVehicle(o);objectGroup.add(group);buildingParts.set('object:'+id,group)}
+ for(const [id,o] of s.objects){const group=buildAsset(o);objectGroup.add(group);buildingParts.set('object:'+id,group)}
 }
 function rebuildAll(){
   buildingParts.clear();rebuildBoard();rebuildFloor();rebuildParking();rebuildWalls();rebuildObjects();updateStatus();scheduleDraw();
@@ -677,15 +917,70 @@ function markSelected(){
     highlightGroup.add(lines)
   }
 }
+function editRecord(edit){
+  if(!edit)return null;
+  if(edit.kind==='floor'){
+    const [x,z]=edit.id.split(':').map(Number), slot=parkingAt(x,z);
+    return slot?{...slot,kind:'parking'}:{x,z,kind:'floor',variant:s.floors.get(edit.id)};
+  }
+  if(edit.kind==='wall')return s.walls.get(edit.id)||null;
+  return s.objects.get(edit.id)||null;
+}
+function editRotationAllowed(edit,rotation){
+  const record=editRecord(edit);if(!record)return false;
+  if(edit.kind==='floor'){
+    if(record.kind!=='parking')return true;
+    const newCells=parkingCells({...record,rotation});
+    // Reorient a parking bay only when it does not cover someone else's bay or an existing object.
+    return rotation===edit.originalRotation || (canPlaceParking(record.x,record.z,rotation,record.id)&&!objectOnAny(newCells));
+  }
+  if(edit.kind==='wall')return isWallValid({...record,turn:rotation},record.id);
+  const nextCells=footprintCells(record.x,record.z,record.category,record.variant,rotation);
+  return cellsAvailableForObject(nextCells,record.category,record.variant,record.id);
+}
+function setOriginalVisible(kind,id,visible){
+  if(kind==='object'||kind==='wall'){
+    const group=buildingParts.get(kind+':'+id);if(group)group.visible=visible;
+  }else if(kind==='floor'){
+    const [x,z]=id.split(':').map(Number),slot=parkingAt(x,z);
+    if(slot){for(const c of parkingCells(slot))toggleFloorVisible(tileKey(c.x,c.z),visible);toggleParkingVisible(slot.id,visible)}
+    else toggleFloorVisible(id,visible);
+  }
+}
 function makeGhostGroup(){
   clearGroup(ghostGroup);
+  if(s.erase)return;
+  // Selection stage has a stationary translucent preview; mouse movement never displaces it.
+  if(s.editing&&!s.moving){
+    const edit=s.editing,original=editRecord(edit);
+    if(!original)return;
+    const valid=editRotationAllowed(edit,edit.rotation);
+    const tint=valid?'#61a8ff':'#fa657c';
+    if(edit.kind==='wall'){
+      ghostGroup.add(buildWallGeometry({...original,turn:edit.rotation},true,valid));
+    }else if(edit.kind==='object'){
+      const preview={...original,rotation:edit.rotation};
+      ghostGroup.add(buildAsset(preview,true,valid));
+    }else if(original.kind==='parking'){
+      const rot=edit.rotation,mid=getParkingCenter({...original,rotation:rot});
+      const geo=new THREE.PlaneGeometry(1,2);geo.rotateX(-Math.PI/2);
+      const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.42,side:THREE.DoubleSide,depthWrite:false}));
+      mesh.position.set(mid.x,.088,mid.z);mesh.rotation.y=rot*Math.PI/2;mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);
+    }else{
+      const geo=new THREE.PlaneGeometry(1,1);geo.rotateX(-Math.PI/2);
+      const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.43,side:THREE.DoubleSide,depthWrite:false}));
+      mesh.position.set(original.x+.5,.074,original.z+.5);mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);
+    }
+    return;
+  }
   const activity=s.moving||s.tool;
-  if(!activity||s.erase||!s.hover)return;
+  if(!activity||!s.hover)return;
   const cell=s.hover;
-  const valid=canPlace(activity,cell,s.hoverEdge);
+  const activeEdge=activity.kind==='wall'?rotatedWallEdge(activity,cell,s.hoverEdge):s.hoverEdge;
+  const valid=canPlace(activity,cell,activeEdge);
   const tint=valid?'#61a8ff':'#fa657c';
   if(activity.kind==='parking'){
-    const rot=activity.rotation||0,cs=footprintCells(cell.x,cell.z,'parking','parking',rot),mid=getObjectCenter({x:cell.x,z:cell.z,category:'parking',variant:'parking',rotation:rot});
+    const rot=activity.rotation||0,mid=getObjectCenter({x:cell.x,z:cell.z,category:'parking',variant:'parking',rotation:rot});
     const geo=new THREE.PlaneGeometry(1,2);geo.rotateX(-Math.PI/2);
     const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.38,side:THREE.DoubleSide,depthWrite:false}));
     mesh.position.set(mid.x,.09,mid.z);mesh.rotation.y=rot*Math.PI/2;mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);
@@ -694,15 +989,21 @@ function makeGhostGroup(){
     if(a){const geo=new THREE.PlaneGeometry(a.n,a.n);geo.rotateX(-Math.PI/2);
       const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.35,side:THREE.DoubleSide,depthWrite:false}));
       mesh.position.set(a.x+a.n/2,.065,a.z+a.n/2);mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);}
-  } else if(activity.kind==='wall'&&s.hoverEdge){
-    for(const w of wallBrushSegments(cell,s.hoverEdge,s.moving?1:s.brushSize)){
+  } else if(activity.kind==='wall'&&activeEdge){
+    for(const w of wallBrushSegments(cell,activeEdge,s.moving?1:s.brushSize)){
       const wValid=sideAllowed(edgeOf(w))&&isWallValid(w,s.moving?.id??null);
       ghostGroup.add(buildWallGeometry({...w,id:-1},true,wValid));
     }
   } else if(activity.kind==='object'){
     const o={id:-1,x:cell.x,z:cell.z,category:activity.category,variant:activity.variant,rotation:activity.rotation||0};
-    ghostGroup.add(activity.category==='box'?buildBox(o,true,valid):activity.category==='person'?buildPerson(o,true,valid):buildVehicle(o,true,valid));
+    ghostGroup.add(buildAsset(o,true,valid));
   }
+}
+function rotatedWallEdge(activity,cell,near){
+  if(!near||!cell)return near;
+  const offset=activity.wallStartingRotation===undefined?(activity.rotation||0):((activity.rotation||0)-activity.wallStartingRotation+4)%4;
+  const side=(near.side+offset+4)%4;
+  return {side,edge:edgeFor(cell.x,cell.z,side),distance:near.distance};
 }
 function pointerToWorld(cx,cy){
   const rect=canvas.getBoundingClientRect();
@@ -733,7 +1034,7 @@ function wallBrushSegments(cell,edgeData,span=s.brushSize){
   return Array.from({length:n},(_,i)=>{
     const x=horizontal?first+i:cell.x;
     const z=horizontal?cell.z:first+i;
-    return {x,z,baseSide:edgeData.side,turn:0,type:s.variant};
+    return {x,z,baseSide:edgeData.side,turn:0,type:s.moving?.kind==='wall'?s.moving.variant:s.variant};
   });
 }
 function canBrushFloor(cell){
@@ -787,7 +1088,7 @@ function canPlace(activity,c,edgeData){
   }
   if(activity.kind==='object'){
     const cells=footprintCells(c.x,c.z,activity.category,activity.variant,activity.rotation||0);
-    return cells.every(p=>inBounds(p)&&s.floors.has(tileKey(p.x,p.z))&&objectAtCell(p,s.moving?.id??null)===null);
+    return cellsAvailableForObject(cells,activity.category,activity.variant,s.moving?.id??null);
   }
   return false;
 }
@@ -801,37 +1102,30 @@ function pickEntity(clientX,clientY){
  const r=canvas.getBoundingClientRect();
  pointer.set((clientX-r.left)/r.width*2-1,-(clientY-r.top)/r.height*2+1);
  raycaster.setFromCamera(pointer,camera);
- const roots=[...wallGroup.children,...objectGroup.children,...floorGroup.children.filter(o=>o.isMesh)];
+ // Object > wall > tile only when a real surface is hit; don't select through the floor.
+ const roots=[...objectGroup.children,...wallGroup.children,...floorGroup.children.filter(o=>o.isMesh)];
  const hits=raycaster.intersectObjects(roots,true);
+ let floorHit=null,solidHit=null;
  for(const hit of hits){
    if(hit.object.isInstancedMesh&&hit.object.userData.tileKeys&&Number.isInteger(hit.instanceId)){
-     return {kind:'floor',id:hit.object.userData.tileKeys[hit.instanceId]};
-   }
-   if(hit.object.userData.entity){
-     const e=hit.object.userData.entity;return {kind:e.type,id:e.id};
+     floorHit??={kind:'floor',id:hit.object.userData.tileKeys[hit.instanceId],distance:hit.distance};
+   }else if(hit.object.userData.entity){
+     const e=hit.object.userData.entity;
+     const candidate={kind:e.type,id:e.id,distance:hit.distance};
+     if(!solidHit||hit.distance<solidHit.distance-.005||Math.abs(hit.distance-solidHit.distance)<.005&&candidate.kind==='object')solidHit=candidate;
    }
  }
- return null;
+ if(solidHit&&(!floorHit||solidHit.distance<=floorHit.distance+.08))return {kind:solidHit.kind,id:solidHit.id};
+ return floorHit?{kind:'floor',id:floorHit.id}:null;
 }
 function selectedAnchor(){
  if(!s.selection)return null;
  if(s.selection.kind==='floor'){const [x,z]=s.selection.id.split(':').map(Number);const slot=parkingAt(x,z);if(slot){const p=getParkingCenter(slot);p.y=.26;return p}return new THREE.Vector3(x+.5,.24,z+.5)}
-  if(s.selection.kind==='object'){const o=s.objects.get(s.selection.id);if(o){const p=getObjectCenter(o);p.y=o.category==='person'?1.55:o.category==='box'&&o.variant.startsWith('rack')?2.25:o.category==='box'&&o.variant==='warehouseSet'?2.2:isLongVehicle(o)?1.8:1.6;return p}}
+  if(s.selection.kind==='object'){const o=s.objects.get(s.selection.id);if(o){const p=getObjectCenter(o);p.y=o.category==='person'?1.55:o.category==='box'&&o.variant.startsWith('rack')?2.25:o.category==='box'&&o.variant==='warehouseSet'?2.2:o.category==='facility'&&o.variant==='stairs'?1.65:isLongVehicle(o)?1.8:1.6;return p}}
  if(s.selection.kind==='wall'){const o=s.walls.get(s.selection.id);if(o){const e=edgeOf(o);return new THREE.Vector3(e.axis==='h'?e.x+.5:e.x,2.4,e.axis==='h'?e.z:e.z+.5)}}
  return null;
 }
-function updateToolbar(){
- const toolbar=$('editTools');if(!s.selection||s.tool||s.moving){toolbar.hidden=true;return}
- const p=selectedAnchor();if(!p){toolbar.hidden=true;return}
- p.project(camera);const r=canvas.getBoundingClientRect();
- const px=(p.x+1)*r.width/2,py=(-p.y+1)*r.height/2;
- toolbar.style.left=`${Math.max(75,Math.min(r.width-75,px))}px`;
- toolbar.style.top=`${Math.max(12,Math.min(r.height-50,py-30))}px`;
- toolbar.hidden=false;
- const rotDisabled=s.selection.kind==='floor'&&!parkingAt(...s.selection.id.split(':').map(Number));
- $('rotateLeft').disabled=rotDisabled;
- $('rotateRight').disabled=rotDisabled;
-}
+function updateToolbar(){ /* V2.6: no floating rotation/delete buttons. Keyboard and wheel only. */ }
 function viewDirection(){
  const cp=Math.cos(s.elevation),sp=Math.sin(s.elevation);
  return new THREE.Vector3(Math.sin(s.yaw)*cp,sp,Math.cos(s.yaw)*cp);
@@ -883,7 +1177,7 @@ function toast(message,isError=false){
 }
 function updateStatus(){
  safeText('statusText',`${s.cols}×${s.rows} · ${(s.cols*s.rows).toLocaleString()}칸   |   바닥 ${s.floors.size} · 주차면 ${s.parkingSlots.size} · 벽 ${s.walls.size} · 설치물 ${s.objects.size}`);
- const cur=s.moving?'기존 설치물 이동 중':s.tool?`${CATEGORIES[s.category]} · ${ITEMS[s.category].find(v=>v.id===s.variant)?.label} 배치 중`:s.selection?'설치물 선택됨':'템플릿 선택 모드';
+ const cur=s.moving?'이동 편집 중 · 클릭 확정 · 휠 회전 · Del 삭제 · ESC 취소':s.editing?'제자리 편집 중 · 휠 회전 · Space 이동 · 클릭 확정 · Del 삭제 · ESC 취소':s.tool?`${CATEGORIES[s.category]} · ${ITEMS[s.category].find(v=>v.id===s.variant)?.label} 배치 중`:s.selection?'설치물 선택됨':'템플릿 선택 모드';
  safeText('modeName',s.tool&&(s.tool.kind==='floor'||s.tool.kind==='wall'||s.tool.kind==='parking')?`${cur} · ${s.tool.kind==='floor'?`${s.brushSize}×${s.brushSize}칸`:s.tool.kind==='parking'?'1×2칸':`${s.brushSize}칸 길이`}`:cur);
 }
 function setCategory(name){
@@ -902,16 +1196,56 @@ function setCategory(name){
    b.append(visual,caption);b.addEventListener('click',()=>beginBuild(name,item.id));panel.appendChild(b);
  }
 }
+function beginEdit(pick){
+  if(!pick)return;
+  const record=pick.kind==='object'?s.objects.get(pick.id):pick.kind==='wall'?s.walls.get(pick.id):editRecord({kind:'floor',id:pick.id});
+  if(!record)return;
+  const rotation=pick.kind==='wall'?(record.turn||0):(record.rotation||0);
+  s.selection=pick;
+  s.editing={...pick,rotation,originalRotation:rotation};
+  setOriginalVisible(pick.kind,pick.id,false);
+  clearGroup(highlightGroup);makeGhostGroup();updateStatus();scheduleDraw();
+}
+function cancelEditing(){
+  if(!s.editing)return;
+  const item=s.editing;
+  setOriginalVisible(item.kind,item.id,true);
+  s.editing=null;s.selection=null;
+  clearGroup(ghostGroup);clearGroup(highlightGroup);
+  updateStatus();scheduleDraw();
+}
+function confirmEditing(){
+  const edit=s.editing;if(!edit)return;
+  if(!editRotationAllowed(edit,edit.rotation)){
+    toast('회전 위치에 바닥이 없거나 다른 설치물이 있어요. 방향을 바꾸거나 ESC로 취소해 주세요.',true);return;
+  }
+  const changed=edit.rotation!==edit.originalRotation;
+  s.editing=null;s.selection=null;
+  clearGroup(ghostGroup);clearGroup(highlightGroup);
+  if(changed){
+    mutate(()=>{
+      if(edit.kind==='object'){const o=s.objects.get(edit.id);if(o)o.rotation=edit.rotation}
+      else if(edit.kind==='wall'){const w=s.walls.get(edit.id);if(w)w.turn=edit.rotation}
+      else if(edit.kind==='floor'){
+        const [x,z]=edit.id.split(':').map(Number),p=parkingAt(x,z);
+        if(p){for(const c of parkingCells(p))s.floors.delete(tileKey(c.x,c.z));p.rotation=edit.rotation;for(const c of parkingCells(p))s.floors.set(tileKey(c.x,c.z),'parking')}
+      }
+    });
+  }else setOriginalVisible(edit.kind,edit.id,true);
+  markSelected();updateStatus();scheduleDraw();
+}
 function beginBuild(name,type){
  s.tool={kind:name==='floor'&&type==='parking'?'parking':name==='floor'?'floor':name==='wall'?'wall':'object',category:name,variant:type,rotation:0};
  $('brushRow').style.display=name==='floor'&&type==='parking'?'none':(name==='floor'||name==='wall')?'flex':'none';
- s.category=name;s.variant=type;s.selection=null;s.moving=null;s.erase=false;
- $('app').classList.add('building');$('editorLabel').textContent=`${CATEGORIES[name]} 배치 중 · ${['vehicle','box','person'].includes(name)||type==='parking'?'R 방향 변경 · ':''}ESC 선택 창`;updateStatus();
+ if(s.editing)cancelEditing();
+ s.category=name;s.variant=type;s.selection=null;s.editing=null;s.moving=null;s.erase=false;
+ $('app').classList.add('building');$('editorLabel').textContent=`${CATEGORIES[name]} 배치 중 · ${['vehicle','box','person','conveyor','facility','robot'].includes(name)||type==='parking'?'휠 좌/우 90° · ':''}ESC 선택 창`;updateStatus();
  canvas.focus();makeGhostGroup();scheduleDraw();
 }
 function exitBuild(){
  if(s.moving){restoreMove();}
- s.tool=null;s.erase=false;s.selection=null;
+ if(s.editing)cancelEditing();
+ s.tool=null;s.erase=false;s.selection=null;s.editing=null;
  $('app').classList.remove('building');$('editorLabel').textContent='선택한 블록을 배치하세요';
  clearGroup(ghostGroup);markSelected();updateStatus();scheduleDraw();
 }
@@ -924,11 +1258,12 @@ function startMove(){
    if(objectOnAny(cs)||[...s.walls.values()].some(w=>cs.some(c=>dependentWall(w,c.x,c.z)))){
      toast('주차장에 연결된 설치물이나 벽을 먼저 옮겨 주세요.',true);return;
    }
-   s.moving={kind:'parking',id:slot.id,originalKey:t.id,data:structuredClone(slot),category:'parking',variant:'parking',rotation:slot.rotation};
+   s.moving={kind:'parking',id:slot.id,originalKey:t.id,data:structuredClone(slot),category:'parking',variant:'parking',rotation:s.editing?.rotation??slot.rotation};
+   s.editing=null;
    s.selection=null;markSelected();
    for(const p of cs)toggleFloorVisible(tileKey(p.x,p.z),false);
    toggleParkingVisible(slot.id,false);
-   $('app').classList.add('building');$('editorLabel').textContent='주차장 이동 · R 방향 변경 · ESC 취소';
+   $('app').classList.add('building');$('editorLabel').textContent='주차장 이동 · 휠 좌/우 90° · 클릭 확정 · ESC 취소';
    updateStatus();makeGhostGroup();scheduleDraw();return;
  }
 
@@ -939,11 +1274,12 @@ function startMove(){
    const hasWall=[...s.walls.values()].some(w=>w.x===x&&w.z===z);
    if(hasObject||hasWall){toast('연결된 벽이나 설치물을 먼저 이동해 주세요.',true);return}
  }
- s.moving={kind:t.kind,id:t.id,originalKey:t.id,data:structuredClone(orig),category:orig.category,variant:t.kind==='floor'?orig:orig.type||orig.variant,rotation:orig.rotation||0};
+ s.moving={kind:t.kind,id:t.id,originalKey:t.id,data:structuredClone(orig),category:orig.category,variant:t.kind==='floor'?orig:orig.type||orig.variant,rotation:s.editing?.rotation??(t.kind==='wall'?orig.turn||0:orig.rotation||0),wallStartingRotation:orig.turn||0};
+ s.editing=null;
  s.selection=null;markSelected();
  const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):null;
  if(t.kind==='floor')toggleFloorVisible(t.id,false);else if(grp)grp.visible=false;
- $('app').classList.add('building');$('editorLabel').textContent='이동 중 · 위치 클릭으로 확정 · ESC 취소';
+ $('app').classList.add('building');$('editorLabel').textContent='이동 중 · 클릭 확정 · 휠 좌/우 90° · Del 삭제 · ESC 취소';
  updateStatus();makeGhostGroup();scheduleDraw();
 }
 function restoreMove(){
@@ -954,7 +1290,7 @@ function restoreMove(){
  else if(t.kind==='parking'){
   const slot=s.parkingSlots.get(t.id);if(slot){for(const c of parkingCells(slot))toggleFloorVisible(tileKey(c.x,c.z),true);toggleParkingVisible(slot.id,true)}
  }else if(grp)grp.visible=true;
- s.moving=null;clearGroup(ghostGroup);$('app').classList.remove('building');updateStatus();scheduleDraw();
+ s.moving=null;s.selection=null;s.editing=null;clearGroup(ghostGroup);clearGroup(highlightGroup);$('app').classList.remove('building');updateStatus();scheduleDraw();
 }
 function resolveClick(clientX,clientY){
  const world=pointerToWorld(clientX,clientY),cell=hitCell(world);
@@ -965,8 +1301,9 @@ function resolveClick(clientX,clientY){
  }
  const activity=s.moving||s.tool;
  if(activity){
-   const nearest=cell?nearestSide(world,cell):null;
-   if(!canPlace(activity,cell,nearest)){toast('바닥 타일을 먼저 깔거나 비어 있는 위치를 선택해 주세요.',true);return}
+   const nearestBase=cell?nearestSide(world,cell):null;
+   const nearest=activity.kind==='wall'?rotatedWallEdge(activity,cell,nearestBase):nearestBase;
+   if(!canPlace(activity,cell,nearest)){toast('비어 있는 위치를 선택해 주세요. 계단 외의 설비는 바닥 타일 위에만 배치할 수 있어요.',true);return}
    if(s.moving){
       const t=s.moving;
       mutate(()=>{
@@ -984,7 +1321,7 @@ function resolveClick(clientX,clientY){
           const o=s.objects.get(t.id);o.x=cell.x;o.z=cell.z;o.rotation=t.rotation??o.rotation;
         }
       });
-      s.moving=null;s.tool=null;$('app').classList.remove('building');$('editorLabel').textContent='설치물 선택 모드';
+      s.moving=null;s.editing=null;s.selection=null;s.tool=null;$('app').classList.remove('building');$('editorLabel').textContent='설치물 선택 모드';
       clearGroup(ghostGroup);updateStatus();scheduleDraw();return;
    }
    if(activity.kind==='parking'){
@@ -1009,9 +1346,9 @@ function resolveClick(clientX,clientY){
    }
    return;
  }
+ if(s.editing){confirmEditing();return}
  const pick=pickEntity(clientX,clientY);
- if(pick&&s.selection&&s.selection.kind===pick.kind&&s.selection.id===pick.id){startMove();return}
- s.selection=pick;markSelected();updateStatus();scheduleDraw();
+ if(pick)beginEdit(pick);else {s.selection=null;clearGroup(highlightGroup);makeGhostGroup();updateStatus();scheduleDraw();}
 }
 function dependentWall(w,x,z){
  const e=edgeOf(w);if(e.axis==='h')return (e.x===x&&e.z===z)||(e.x===x&&e.z===z+1);
@@ -1023,7 +1360,7 @@ function removeEntity(sel){
   if(sel.kind==='floor'){
     const [x,z]=sel.id.split(':').map(Number),slot=parkingAt(x,z);
     if(slot)clearParkingSlot(slot);else s.floors.delete(sel.id);
-    for(const [id,o] of s.objects)if(!objectCells(o).every(c=>s.floors.has(tileKey(c.x,c.z))))s.objects.delete(id);
+    for(const [id,o] of s.objects)if(needsFloor(o.category,o.variant)&&!objectCells(o).every(c=>s.floors.has(tileKey(c.x,c.z))))s.objects.delete(id);
     for(const [id,w] of s.walls){
       const e=edgeOf(w);
       if(!sideAllowedAfterRemoval(e))s.walls.delete(id);
@@ -1060,7 +1397,7 @@ function rotateSelection(dir){
  }else{
    const o=s.objects.get(target.id);if(!o)return;
    const next=(o.rotation+dir+4)%4;
-   if(!footprintCells(o.x,o.z,o.category,o.variant,next).every(c=>inBounds(c)&&s.floors.has(tileKey(c.x,c.z))&&objectAtCell(c,o.id)===null)){
+   if(!cellsAvailableForObject(footprintCells(o.x,o.z,o.category,o.variant,next),o.category,o.variant,o.id)){
      toast('회전할 방향의 타일이 없거나 다른 설치물이 있어요.',true);return;
    }
    mutate(()=>o.rotation=next);
@@ -1099,6 +1436,7 @@ async function dbAction(mode,fn){
 async function listLibrary(){const all=await dbAction('readonly',st=>st.getAll());return (all||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))}
 function uniqueId(){return globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(36).slice(2)}`}
 async function saveToLibrary(copy=false){
+ if(s.editing||s.moving){toast('편집 중인 설치물을 클릭해 확정하거나 ESC로 취소한 뒤 저장해 주세요.',true);return}
  try{
   if(copy){const input=prompt('새 프로젝트 이름을 입력하세요.',getProjectName()+' 복사본');if(input===null)return;const newName=input.trim();if(!newName){toast('프로젝트 이름을 입력해 주세요.',true);return}$('projectName').value=newName}
   const id=!copy&&s.currentProjectId?s.currentProjectId:uniqueId(),now=Date.now();
@@ -1152,7 +1490,7 @@ async function importLibraryBackup(file){
 function newBlankProject(){
  if(!confirm('새 공장 구조도를 시작할까요? 저장하지 않은 현재 변경 사항은 사라집니다.'))return;
  s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.serial=1;s.currentProjectId=null;
- s.tool=null;s.selection=null;s.moving=null;s.erase=false;s.history=[];
+ s.tool=null;s.selection=null;s.editing=null;s.moving=null;s.erase=false;s.history=[];
  s.target.set(s.cols/2,0,s.rows/2);s.zoom=1.15;
  $('projectName').value='새_공장_구조도';$('app').classList.remove('building');
  rebuildAll();markSelected();clearGroup(ghostGroup);$('projectDialog').close();toast('새 프로젝트를 시작했어요.');
@@ -1168,14 +1506,14 @@ function loadSnapshot(data){
    const [x,z]=key.split(':').map(Number);if(!parkingAt(x,z))s.floors.delete(key);
  }
  s.walls=new Map((data.walls||[]).filter(w=>Number.isInteger(w.id)&&['plain','window','door'].includes(w.type)).map(w=>[w.id,w]));
- s.objects=new Map((data.objects||[]).filter(o=>Number.isInteger(o.id)&&['box','vehicle','person'].includes(o.category)).map(o=>[o.id,o]));
+ s.objects=new Map((data.objects||[]).filter(o=>Number.isInteger(o.id)&&ITEMS[o.category]?.some(item=>item.id===o.variant)).map(o=>[o.id,o]));
  s.serial=Math.max(data.serial||1,1,...s.walls.keys(),...s.objects.keys(),...s.parkingSlots.keys());
  s.yaw=Number.isFinite(data.camera?.yaw)?data.camera.yaw:Math.PI/4;
  s.elevation=Number.isFinite(data.camera?.elevation)?THREE.MathUtils.clamp(data.camera.elevation,THREE.MathUtils.degToRad(15),THREE.MathUtils.degToRad(82)):THREE.MathUtils.degToRad(55);
  s.zoom=Number.isFinite(data.camera?.zoom)?THREE.MathUtils.clamp(data.camera.zoom,.45,5):1.15;
  s.topViewRestore=null;$('topViewBtn').style.background='';
  s.target.set(data.camera?.target?.[0]??s.cols/2,0,data.camera?.target?.[1]??s.rows/2);
- s.selection=null;s.tool=null;s.moving=null;s.erase=false;
+ s.selection=null;s.tool=null;s.editing=null;s.moving=null;s.erase=false;
  $('gridSelect').value=`${s.cols}x${s.rows}`;$('app').classList.remove('building');rebuildAll();markSelected();clearGroup(ghostGroup);
 }
 async function openProject(file){
@@ -1186,7 +1524,7 @@ async function openProject(file){
 function selectGrid(v){
  const [a,b]=v.split('x').map(Number);
  if(s.floors.size>0&&!confirm('그리드 크기를 변경하면 현재 배치가 초기화됩니다. 계속할까요?')){$('gridSelect').value=`${s.cols}x${s.rows}`;return}
- s.cols=a;s.rows=b;s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.serial=1;s.target.set(a/2,0,b/2);s.zoom=1.15;s.selection=null;s.tool=null;s.moving=null;$('app').classList.remove('building');rebuildAll();
+ s.cols=a;s.rows=b;s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.serial=1;s.target.set(a/2,0,b/2);s.zoom=1.15;s.selection=null;s.tool=null;s.editing=null;s.moving=null;$('app').classList.remove('building');rebuildAll();
 }
 function pan(dx,dy){
  // Screen-right and screen-up vectors projected onto the factory ground.
@@ -1198,7 +1536,7 @@ function pan(dx,dy){
 }
 function zoomBy(factor){s.zoom=THREE.MathUtils.clamp(s.zoom*factor,.40,6);scheduleDraw()}
 function setBuildMode(mode){
- if(mode==='erase'){s.tool=null;s.erase=true;s.selection=null;s.moving=null;$('app').classList.add('building');$('editorLabel').textContent='삭제 모드 · 클릭해서 삭제 · ESC로 종료';makeGhostGroup();markSelected();updateStatus();return}
+ if(mode==='erase'){if(s.editing)cancelEditing();s.tool=null;s.erase=true;s.selection=null;s.editing=null;s.moving=null;$('app').classList.add('building');$('editorLabel').textContent='삭제 모드 · 클릭해서 삭제 · ESC로 종료';makeGhostGroup();markSelected();updateStatus();return}
 }
 function undo(){
  const raw=s.history.pop();if(!raw){toast('되돌릴 작업이 없어요.');return}
@@ -1239,29 +1577,73 @@ function onPointerUp(e){
     }else{lastRightClick=now;lastRightAt={x:e.clientX,y:e.clientY}}
  }
 }
+let wheelGestureLocked=false,wheelGestureReset=null;
+function rotateEditByWheel(dir){
+  const active=s.moving||s.editing||s.tool;
+  if(!active)return false;
+  if(active.kind==='floor'&&!(s.editing&&parkingAt(...String(active.id).split(':').map(Number))))return true;
+  const old=active.rotation||0;
+  active.rotation=(old+dir+4)%4;
+  makeGhostGroup();updateStatus();scheduleDraw();
+  return true;
+}
+function onWheel(e){
+  e.preventDefault();
+  const active=s.moving||s.editing||s.tool;
+  if(active){
+    // A continuous wheel burst means ONE 90-degree rotation, no matter how many
+    // high-resolution wheel events the device emits. Reset after quiet time.
+    clearTimeout(wheelGestureReset);
+    wheelGestureReset=setTimeout(()=>{wheelGestureLocked=false},210);
+    if(wheelGestureLocked||Math.abs(e.deltaY)<.01)return;
+    wheelGestureLocked=true;
+    rotateEditByWheel(e.deltaY<0?-1:1); // up = left; down = right
+  }else{
+    zoomBy(e.deltaY>0?.9:1.1);
+  }
+}
+function deleteActive(){
+  if(s.moving){
+    const m=s.moving;
+    const item=m.kind==='parking'?{kind:'floor',id:m.originalKey}:{kind:m.kind,id:m.id};
+    restoreMove();removeEntity(item);toast('설치물을 삭제했어요. Ctrl+Z로 되돌릴 수 있어요.');return true;
+  }
+  if(s.editing){
+    const item={kind:s.editing.kind,id:s.editing.id};
+    cancelEditing();removeEntity(item);toast('설치물을 삭제했어요. Ctrl+Z로 되돌릴 수 있어요.');return true;
+  }
+  return false;
+}
 function onKeyDown(e){
- const tag=document.activeElement?.tagName;
- if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT')return;
- if(e.key==='Escape'){
-   if(s.moving){restoreMove();s.tool=null;$('app').classList.remove('building');}
-   else exitBuild();
-   e.preventDefault();return;
- }
- const k=e.key.toLowerCase();
- if(k==='r'){
-   const active=s.moving||s.tool;
-   if(active&&(active.kind==='parking'||(active.kind==='object'&&['vehicle','box','person'].includes(active.category)))){
-     active.rotation=((active.rotation||0)+1)%4;makeGhostGroup();scheduleDraw();
-     toast(`배치 방향 ${active.rotation*90}° · R로 계속 회전할 수 있어요.`);e.preventDefault();return;
-   }
- }
- if(['w','a','s','d'].includes(k)){
-   if(k==='w')pan(0,1);if(k==='s')pan(0,-1);if(k==='a')pan(-1,0);if(k==='d')pan(1,0);
-   e.preventDefault();return;
- }
- if((e.ctrlKey||e.metaKey)&&k==='z'){undo();e.preventDefault()}
+  const tag=document.activeElement?.tagName;
+  if(tag==='INPUT'||tag==='TEXTAREA'||tag==='SELECT'||document.querySelector('dialog[open]'))return;
+  const k=e.key.toLowerCase();
+  if(e.key==='Escape'){
+    if(s.moving){restoreMove();s.tool=null;$('app').classList.remove('building');}
+    else if(s.editing)cancelEditing();
+    else exitBuild();
+    e.preventDefault();return;
+  }
+  if(k==='delete'||k==='backspace'){
+    if(deleteActive())e.preventDefault();
+    return;
+  }
+  if(e.code==='Space'||e.key===' '){
+    if(s.editing){startMove();e.preventDefault();return;}
+    if(s.moving){e.preventDefault();return;}
+  }
+  // R remains as an optional keyboard shortcut, while the wheel is primary.
+  if(k==='r'){
+    if(rotateEditByWheel(1)){e.preventDefault();return;}
+  }
+  if(['w','a','s','d'].includes(k)){
+    if(k==='w')pan(0,1);if(k==='s')pan(0,-1);if(k==='a')pan(-1,0);if(k==='d')pan(1,0);
+    e.preventDefault();return;
+  }
+  if((e.ctrlKey||e.metaKey)&&k==='z'){undo();e.preventDefault()}
 }
 async function exportImage(kind='structure',resolution='3840'){
+ if(s.editing||s.moving){toast('편집을 확정하거나 ESC로 취소한 뒤 PNG를 출력해 주세요.',true);return}
  if(s.exportPending)return;
  s.exportPending=true;
  const exportWidth=Number(resolution),exportHeight=Math.round(exportWidth*9/16);
@@ -1269,10 +1651,12 @@ async function exportImage(kind='structure',resolution='3840'){
  const oldPixelRatio=renderer.getPixelRatio();
  const oldSceneBackground=scene.background;
  const baseVisible=staticGroup.visible,objectsVisible=objectGroup.visible;
+ const individualObjectVisibility=objectGroup.children.map(g=>g.visible);
  const ghostVisible=ghostGroup.visible,highlightVisible=highlightGroup.visible;
  try{
    staticGroup.visible=kind==='scene';
-   objectGroup.visible=kind==='scene';
+   objectGroup.visible=true;
+   if(kind==='structure')for(const g of objectGroup.children){const rec=s.objects.get(g.userData.entity?.id);g.visible=!!(rec&&rec.category==='facility'&&rec.variant==='stairs')}
    ghostGroup.visible=false;highlightGroup.visible=false;
    scene.background=kind==='structure'?null:new THREE.Color('#f8fafc');
    renderer.setClearColor(kind==='structure'?0xffffff:0xf8fafc,kind==='structure'?0:1);
@@ -1282,12 +1666,17 @@ async function exportImage(kind='structure',resolution='3840'){
    camera.aspect=aspect;
    camera.fov=CAMERA_FOV;
    camera.updateProjectionMatrix();
-   if(kind==='structure'&&s.floors.size){
+   if(kind==='structure'&&(s.floors.size||[...s.objects.values()].some(o=>o.category==='facility'&&o.variant==='stairs'))){
      let minX=Infinity,minZ=Infinity,maxX=-Infinity,maxZ=-Infinity;
      for(const k of s.floors.keys()){
        const [x,z]=k.split(':').map(Number);
        minX=Math.min(minX,x);minZ=Math.min(minZ,z);
        maxX=Math.max(maxX,x+1);maxZ=Math.max(maxZ,z+1);
+     }
+     // Stairs may stand on the base grid without a painted floor.
+     for(const o of s.objects.values())if(o.category==='facility'&&o.variant==='stairs'){
+       minX=Math.min(minX,o.x);minZ=Math.min(minZ,o.z);
+       maxX=Math.max(maxX,o.x+1);maxZ=Math.max(maxZ,o.z+1);
      }
      // One consistent camera angle for the entire scene, including a 2m tall wall.
      const mid=new THREE.Vector3((minX+maxX)/2,1,(minZ+maxZ)/2);
@@ -1305,6 +1694,7 @@ async function exportImage(kind='structure',resolution='3840'){
    toast('고해상도 출력이 실패했어요. 1920px로 다시 시도해 주세요.',true);
  }finally{
    staticGroup.visible=baseVisible;objectGroup.visible=objectsVisible;
+   objectGroup.children.forEach((g,i)=>{g.visible=individualObjectVisibility[i]??true});
    ghostGroup.visible=ghostVisible;highlightGroup.visible=highlightVisible;
    scene.background=oldSceneBackground;
    renderer.setClearColor(0xe8eef5,1);
@@ -1332,12 +1722,9 @@ function wireUI(){
  $('brushSelect').onchange=e=>{s.brushSize=Number(e.target.value);makeGhostGroup();scheduleDraw();toast(s.category==='wall'?`벽 ${s.brushSize}칸 연속 배치`:`바닥 ${s.brushSize}×${s.brushSize} (${s.brushSize*s.brushSize}칸) 배치`)};
  document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>setCategory(b.dataset.category));
  $('eraseBtn').onclick=()=>setBuildMode('erase');
- $('resetBtn').onclick=()=>{if(confirm('배치된 바닥과 벽, 설치물을 모두 지울까요?')){s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.selection=null;s.moving=null;s.tool=null;$('app').classList.remove('building');rebuildAfterEdit()}};
+ $('resetBtn').onclick=()=>{if(confirm('배치된 바닥과 벽, 설치물을 모두 지울까요?')){if(s.editing)cancelEditing();s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.selection=null;s.editing=null;s.moving=null;s.tool=null;$('app').classList.remove('building');rebuildAfterEdit()}};
  $('undoBtn').onclick=undo;
  $('exitBtn').onclick=exitBuild;
- $('rotateLeft').onclick=()=>rotateSelection(-1);
- $('rotateRight').onclick=()=>rotateSelection(1);
- $('removeBtn').onclick=()=>removeEntity(s.selection);
  $('zoomIn').onclick=()=>zoomBy(1.22);$('zoomOut').onclick=()=>zoomBy(1/1.22);
  $('resetView').onclick=()=>{s.topViewRestore=null;s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(55);scheduleDraw()};
  $('topViewBtn').onclick=()=>{if(s.topViewRestore){s.yaw=s.topViewRestore.yaw;s.elevation=s.topViewRestore.elevation;s.topViewRestore=null;$('topViewBtn').style.background='';}else{s.topViewRestore={yaw:s.yaw,elevation:s.elevation};s.yaw=0;s.elevation=THREE.MathUtils.degToRad(89.95);$('topViewBtn').style.background='#cce3fc';}scheduleDraw()};
@@ -1347,7 +1734,7 @@ function wireUI(){
  canvas.addEventListener('pointermove',onPointerMove);
  canvas.addEventListener('pointerup',onPointerUp);
  canvas.addEventListener('pointercancel',()=>pointerDown=null);
- canvas.addEventListener('wheel',e=>{e.preventDefault();zoomBy(e.deltaY>0?.9:1.1)},{passive:false});
+ canvas.addEventListener('wheel',onWheel,{passive:false});
  window.addEventListener('keydown',onKeyDown);
  if(typeof ResizeObserver!=='undefined')new ResizeObserver(resize).observe(canvasHost);
  window.addEventListener('resize',resize);
@@ -1385,7 +1772,7 @@ try{
   updateStatus();scheduleDraw();
   // Simple public diagnostics for automated testing. No private data.
   window.WORKFIT_TEST={
-   getState:()=>({projection:'perspective',cameraFov:CAMERA_FOV,cols:s.cols,rows:s.rows,floors:s.floors.size,parking:s.parkingSlots.size,walls:s.walls.size,objects:s.objects.size,brushSize:s.brushSize,projectId:s.currentProjectId,yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:s.target.toArray()}),
+   getState:()=>({editing:s.editing?{...s.editing}:null,moving:s.moving?{kind:s.moving.kind,id:s.moving.id,rotation:s.moving.rotation}:null,tool:s.tool?{...s.tool}:null,selected:s.selection?{...s.selection}:null,projection:'perspective',cameraFov:CAMERA_FOV,cols:s.cols,rows:s.rows,floors:s.floors.size,parking:s.parkingSlots.size,walls:s.walls.size,objects:s.objects.size,brushSize:s.brushSize,projectId:s.currentProjectId,yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:s.target.toArray()}),
    selectGrid:v=>selectGrid(v),beginBuild:(cat,type)=>beginBuild(cat,type),
    addFloor:(x,z,type='basic')=>{if(type==='parking'){if(!canPlaceParking(x,z,0))throw Error('parking placement invalid');const id=++s.serial,slot={id,x,z,rotation:0};s.parkingSlots.set(id,slot);for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking')}else{s.floors.set(tileKey(x,z),type)}rebuildAfterEdit()},
    addParking:(x,z,rotation=0)=>{if(!canPlaceParking(x,z,rotation))return false;const id=++s.serial,slot={id,x,z,rotation};s.parkingSlots.set(id,slot);for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');rebuildAfterEdit();return id},
@@ -1393,15 +1780,23 @@ try{
    addVehicle:(x,z,variant='truck',rotation=0)=>{const v={kind:'object',category:'vehicle',variant,rotation};if(!canPlace(v,{x,z},null))return false;const id=++s.serial;s.objects.set(id,{id,x,z,category:'vehicle',variant,rotation});rebuildAfterEdit();return id},
    footprint:(x,z,variant,rotation=0)=>footprintCells(x,z,'vehicle',variant,rotation),
    storageFootprint:(x,z,variant,rotation=0)=>footprintCells(x,z,'box',variant,rotation),
+   assetFootprint:(x,z,category,variant,rotation=0)=>footprintCells(x,z,category,variant,rotation),
+   canAddAsset:(x,z,category,variant,rotation=0)=>canPlace({kind:'object',category,variant,rotation},{x,z},null),
    availableCategories:()=>Object.keys(ITEMS),assetNames:(cat)=>ITEMS[cat]?.map(v=>v.label)||[],
    parkingSlots:()=>[...s.parkingSlots.values()],
    checkPlacement:(x,z,variant,rotation=0)=>canPlace({kind:'object',category:'vehicle',variant,rotation},{x,z},null),
    addWall:(x,z,side,type='plain')=>{const id=++s.serial;s.walls.set(id,{id,x,z,baseSide:side,turn:0,type});rebuildAfterEdit();return id},
-   entityRotation:(id,dir)=>{s.selection={kind:'wall',id};rotateSelection(dir)},
+   entityRotation:(id,dir)=>{s.selection={kind:'wall',id};rotateSelection(dir);s.selection=null},
+   selectObject:id=>{beginEdit({kind:'object',id});return !!s.editing},selectFloor:(x,z)=>{beginEdit({kind:'floor',id:tileKey(x,z)});return !!s.editing},
+   selectWall:id=>{beginEdit({kind:'wall',id});return !!s.editing},rotateWheel:dir=>rotateEditByWheel(dir),startMove,confirmEditing,cancelEditing,deleteActive,
+   hoverAt:(x,z)=>{s.hover=hitCell({x,z});s.hoverEdge=s.hover?nearestSide({x:x+.5,z:z+.5},s.hover):null;makeGhostGroup();scheduleDraw()},
+   clickWorld:(x,z)=>{rebuildCamera();const p=new THREE.Vector3(x,0,z).project(camera);const r=canvas.getBoundingClientRect();resolveClick(r.left+(p.x+1)*r.width/2,r.top+(1-p.y)*r.height/2)},
    floorArea:(x,z,n)=>floorBrushArea({x,z},n),wallBrush:(x,z,side,n)=>wallBrushSegments({x,z},{side,edge:edgeFor(x,z,side)},n),listProjects:listLibrary,saveToLibrary,save:snapshotData,
    load:loadSnapshot,
    export:exportImage,
-   clear:()=>{s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();rebuildAfterEdit()}
+   clear:()=>{s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();rebuildAfterEdit()},
+   models:()=>[...s.objects.values()].map(o=>({category:o.category,variant:o.variant,x:o.x,z:o.z})),
+   buildAssetVariant:(category,variant)=>buildAsset({id:-100,x:1,z:1,category,variant,rotation:0},true,true)
   };
 }catch(err){
  console.error('WORKFIT initialization failed',err);
