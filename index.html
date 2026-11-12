@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <meta name="color-scheme" content="light"/>
-<title>WORKFIT | 3D 공장 구조도 에디터 V2.0</title>
+<title>WORKFIT | 3D 공장 구조도 에디터 V2.5</title>
 <style>
 :root{font-family:"Pretendard","Malgun Gothic",system-ui,sans-serif;color:#243247;background:#eef2f6}
 *{box-sizing:border-box}
@@ -26,11 +26,11 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 .viewControls button{width:33px;height:31px;border:0;border-radius:7px;background:#f2f6fa;color:#3e546b;font-size:17px}
 .viewControls button:hover{background:#e2ecf9}
 .rightPanel{width:277px;flex:none;display:flex;background:#fff;border-left:1px solid #dfe8f1;transition:width .17s ease,opacity .17s ease;overflow:hidden}
-.categoryRail{width:58px;flex:none;border-right:1px solid #e6edf5;padding:13px 5px;display:flex;flex-direction:column;gap:6px}
+.categoryRail{width:58px;flex:none;border-right:1px solid #e6edf5;padding:13px 5px;display:flex;flex-direction:column;gap:6px;overflow-y:auto}
 .categoryRail button{width:48px;min-height:62px;background:transparent;border:1px solid transparent;border-radius:10px;font-size:10px;color:#738396;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px}.categoryRail button .catIcon{font-size:25px;line-height:1}.categoryRail button.active{border-color:#b8d5f4;background:#ebf4ff;color:#255f9c;font-weight:700}
 .templatePanel{padding:17px 12px;flex:1;min-width:0;overflow:auto}
 .templatePanel h2{font-size:14px;margin:0 0 6px;color:#29394d}.templatePanel .desc{font-size:11px;line-height:1.6;color:#8392a4;margin:0 0 14px}.assetGrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}.asset{height:106px;background:#fbfcfe;border:1px solid #e2e9f2;border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;font-size:11px;font-weight:650;color:#516377;transition:.12s}.asset:hover{background:#ecf5ff;border-color:#9ac1eb;transform:translateY(-1px)}
-.asset-icon{width:52px;height:48px;display:grid;place-items:center;font-size:29px;color:var(--tone);text-shadow:0 2px 1px #5965742c;filter:drop-shadow(0 5px 2px #24324722)}
+.brushRow{margin:10px 0 14px;padding:11px 10px;border:1px solid #dfebf7;border-radius:9px;background:#f4f8fc;display:flex;align-items:center;gap:9px;justify-content:space-between}.brushRow label{font-size:11px;font-weight:700;color:#496079}.brushRow select{width:94px;padding:7px;border-radius:7px;background:white;border:1px solid #cbd9ea;color:#27547e;font-size:11px}.brushRow small{font-size:10px;color:#8493a5}.asset-icon{width:52px;height:48px;display:grid;place-items:center;font-size:29px;color:var(--tone);text-shadow:0 2px 1px #5965742c;filter:drop-shadow(0 5px 2px #24324722)}
 .tip{margin-top:18px;background:#f6f9fd;border:1px solid #e7edf5;border-radius:10px;padding:11px;font-size:10px;line-height:1.75;color:#75869b}
 .actions{display:flex;gap:7px;margin-top:14px}.actions button{border:1px solid #e0e8f1;border-radius:7px;background:#f8fafc;color:#586e83;padding:8px;flex:1;font-size:11px}
 .building .rightPanel{width:0;border:0;opacity:0}.buildModeBar{display:none;position:absolute;left:50%;transform:translateX(-50%);bottom:14px;gap:12px;align-items:center;background:#fff;border:1px solid #bbd8f5;border-radius:10px;padding:9px 13px;box-shadow:0 5px 20px #0f304429;white-space:nowrap;font-size:11px;color:#47617e}.building .buildModeBar{display:flex}.buildModeBar button{border:1px solid #c9ddf3;background:#f1f7ff;border-radius:7px;padding:6px 10px;color:#245f9c;font-weight:700}
@@ -38,28 +38,35 @@ button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid 
 #toast{position:absolute;z-index:15;left:50%;top:12%;transform:translate(-50%,-9px);max-width:80%;background:#213b56;color:white;box-shadow:0 8px 24px #2637483d;padding:11px 15px;border-radius:8px;font-size:12px;line-height:1.5;opacity:0;pointer-events:none;transition:.18s}.visible#toast{opacity:1;transform:translate(-50%,0)}#toast.bad{background:#8b3145}
 .statusbar{height:32px;flex:none;background:white;border-top:1px solid #e1e9f3;padding:8px 16px;font-size:11px;color:#6b7f93}
 .loading{position:absolute;inset:0;z-index:30;display:grid;place-items:center;background:#eaf0f7e8}.loadingCard{max-width:450px;margin:20px;text-align:center;border:1px solid #dfebf6;background:white;border-radius:16px;box-shadow:0 18px 55px #233c5920;padding:30px 35px}.loadingCard h3{font-size:16px;margin:8px 0}.loadingCard p{font-size:12px;color:#73869a;line-height:1.65}.loadingCard button{border:0;background:#234a72;color:white;padding:10px 20px;border-radius:8px}
-dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:0 20px 65px #1b314548;max-width:440px;width:calc(100vw - 44px)}dialog::backdrop{background:#19273a8a}dialog h3{font-size:16px;margin:0 0 8px}dialog p{font-size:12px;color:#738497;line-height:1.6}dialog label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:12px;cursor:pointer}dialog select{width:100%;padding:9px;border:1px solid #cbd8e8;border-radius:8px}dialog .end{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}dialog button{padding:9px 15px;border-radius:8px;border:1px solid #dce5ee;background:#f8fafc}dialog button.confirm{background:#254769;color:white;border-color:#254769}
+dialog{border:1px solid #e2eaf3;border-radius:14px;padding:20px 22px;box-shadow:0 20px 65px #1b314548;max-width:440px;width:calc(100vw - 44px)}dialog::backdrop{background:#19273a8a}dialog h3{font-size:16px;margin:0 0 8px}dialog p{font-size:12px;color:#738497;line-height:1.6}dialog label{display:flex;gap:10px;align-items:center;padding:10px 0;font-size:12px;cursor:pointer}dialog select{width:100%;padding:9px;border:1px solid #cbd8e8;border-radius:8px}#projectDialog{max-width:640px;width:calc(100vw - 36px)}.projectList{display:flex;flex-direction:column;gap:7px;max-height:370px;overflow:auto;margin:10px 0;padding:3px}.projectItem{display:flex;align-items:center;gap:10px;border:1px solid #e2e9f2;background:#fafdff;border-radius:10px;padding:10px}.projectItem .projectMeta{flex:1;min-width:0}.projectItem strong{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px}.projectItem small{display:block;font-size:10px;color:#7d8ca0;margin-top:4px}.projectItem button{font-size:11px;padding:6px 9px;white-space:nowrap}.projectItem button.delete{color:#ad4154;border-color:#f5cfd5;background:#fff6f7}.libraryNote{font-size:10px;color:#8797aa;line-height:1.6;margin:8px 0}.libraryActions{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}.libraryActions button{font-size:11px}.libraryEmpty{font-size:12px;text-align:center;color:#7a8c9e;padding:32px 10px}dialog .end{display:flex;justify-content:flex-end;gap:8px;margin-top:20px}dialog button{padding:9px 15px;border-radius:8px;border:1px solid #dce5ee;background:#f8fafc}dialog button.confirm{background:#254769;color:white;border-color:#254769}
 @media(max-width:750px){.topBrand p{display:none}#projectName{width:125px}.rightPanel{width:210px}.templatePanel{padding:13px 8px}.assetGrid{grid-template-columns:1fr}.asset{height:76px}.leftbar{width:79px}.leftbar select{width:73px}.leftbar button{width:68px}.topbar{padding:0 8px}.topActions button{padding:7px 8px;font-size:11px}.editorFooter{display:none}}
 </style>
 </head>
 <body>
 <div id="app">
-<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.0 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
-<div class="topActions"><input id="projectName" value="도입기업_1층공장" aria-label="프로젝트 이름"/><button id="openBtn">불러오기</button><button class="primary" id="saveBtn">저장</button><button id="pngBtn">PNG 출력</button><input type="file" id="filePicker" accept=".workfit,.json,application/json" hidden/></div></header>
+<header class="topbar"><div class="topBrand"><div class="logo">W</div><div><h1>WORKFIT · 3D 공장 구조도 에디터 <span class="version">V2.5 · Three.js</span></h1><p>공장 건물 구조를 만들고 사업계획서용 이미지로 내보내기</p></div></div>
+<div class="topActions"><input id="projectName" value="도입기업_1층공장" aria-label="프로젝트 이름"/><button id="openBtn">내 프로젝트</button><button class="primary" id="saveBtn">저장</button><button id="pngBtn">PNG 출력</button><input type="file" id="filePicker" accept=".workfit,.json,application/json" hidden/></div></header>
 <div class="workspace"><aside class="leftbar"><label for="gridSelect">그리드</label><select id="gridSelect"><option value="33x33">33×33</option><option value="44x44" selected>44×44</option><option value="33x44">33×44</option><option value="44x55">44×55</option></select><div class="spacer"></div><button id="undoBtn">↶ 되돌리기</button><button id="eraseBtn">⌫ 지우기</button><button id="resetBtn">초기화</button></aside>
-<main id="viewport"><div class="viewHead"><strong>▣ 1층 공장 레이아웃</strong><small id="modeName">3D 장면 초기화 중</small></div><div class="editorFooter">WASD 화면 이동 · 좌드래그 수평 회전 · 우드래그 상하 각도 · 우더블클릭 각도 초기화 · 휠 확대</div><div class="buildModeBar"><span id="editorLabel">클릭하여 설치</span><button id="exitBtn">ESC · 종료</button></div><div id="editTools" class="editTools" hidden><button id="rotateLeft" title="왼쪽 회전" aria-label="왼쪽 90도 회전">↶</button><button id="rotateRight" title="오른쪽 회전" aria-label="오른쪽 90도 회전">↷</button><button class="danger" id="removeBtn" title="설치물 삭제" aria-label="삭제">×</button></div>
-<div class="viewControls"><button id="zoomOut" title="축소">−</button><button id="zoomIn" title="확대">+</button><button id="resetView" title="기본 각도">⟳</button><button id="fitBtn" title="전체 보기">⌗</button></div><div id="toast"></div>
+<main id="viewport"><div class="viewHead"><strong>▣ 1층 공장 레이아웃</strong><small id="modeName">3D 장면 초기화 중</small></div><div class="editorFooter">WASD 화면 이동 · 좌드래그 수평 회전 · 우드래그 상하 각도 · 우더블클릭 초기화 · R 설치 방향 · 휠 확대</div><div class="buildModeBar"><span id="editorLabel">클릭하여 설치</span><button id="exitBtn">ESC · 종료</button></div><div id="editTools" class="editTools" hidden><button id="rotateLeft" title="왼쪽 회전" aria-label="왼쪽 90도 회전">↶</button><button id="rotateRight" title="오른쪽 회전" aria-label="오른쪽 90도 회전">↷</button><button class="danger" id="removeBtn" title="설치물 삭제" aria-label="삭제">×</button></div>
+<div class="viewControls"><button id="zoomOut" title="축소">−</button><button id="zoomIn" title="확대">+</button><button id="resetView" title="기본 각도">⟳</button><button id="topViewBtn" title="수직에서 타일이 정사각형인지 확인">▦</button><button id="fitBtn" title="전체 보기">⌗</button></div><div id="toast"></div>
 <div id="loadingOverlay" class="loading"><div class="loadingCard"><div style="font-size:33px">🏗️</div><h3 id="loadingLabel">실제 3D 엔진을 준비하고 있어요</h3><p id="loadingDetail">Three.js 렌더러 초기화 중...</p><button id="loadingRetry" hidden>다시 시도</button></div></div>
 </main>
-<aside class="rightPanel"><nav class="categoryRail"><button class="active" data-category="floor"><span class="catIcon">▱</span>바닥</button><button data-category="wall"><span class="catIcon">▥</span>벽</button><button data-category="box"><span class="catIcon">📦</span>박스</button><button data-category="vehicle"><span class="catIcon">🚜</span>차량</button></nav><section class="templatePanel"><h2 id="sideTitle">바닥 템플릿</h2><p class="desc">블록을 선택하면 메뉴가 접히고 건설 모드가 시작돼요.</p><div id="assetList" class="assetGrid"></div><div class="tip"><b>배치 규칙</b><br>바닥은 그리드 한 칸 · 벽은 타일 가장자리 · 박스/차량은 타일 중앙.<br>검은 격자만 있는 곳에는 설치물을 놓을 수 없어요.</div></section></aside></div>
+<aside class="rightPanel"><nav class="categoryRail"><button class="active" data-category="floor"><span class="catIcon">▱</span>바닥</button><button data-category="wall"><span class="catIcon">▥</span>벽</button><button data-category="box"><span class="catIcon">📦</span>박스</button><button data-category="vehicle"><span class="catIcon">🚜</span>차량</button><button data-category="person"><span class="catIcon">🦺</span>인물</button></nav><section class="templatePanel"><h2 id="sideTitle">바닥 템플릿</h2><p class="desc">블록을 선택하면 메뉴가 접히고 건설 모드가 시작돼요.</p><div id="assetList" class="assetGrid"></div><div class="brushRow" id="brushRow"><label for="brushSelect" id="brushLabel">한 번에 칠하기</label><select id="brushSelect"><option value="1">1×1</option><option value="2">2×2</option><option value="3">3×3</option><option value="4">4×4</option></select></div><div class="tip"><b>배치 규칙</b><br>원근 투영: 가까운 바닥이 크게, 먼 바닥이 작게 보여요. ▦ 버튼으로 수직 정사각형 보기.<br>바닥 1×1~4×4칸 묶음, 주차장 1×2칸(흰 테두리) · 벽 모서리 1~4칸 연속.<br>차량은 1×1 또는 1×2, 사람은 1명당 1칸. 창고 랙은 1×1·1×2·2×2 점유.<br>모든 설치물은 바닥 타일이 있어야 배치 가능하며 R키로 회전해요.</div></section></aside></div>
 <footer class="statusbar"><span id="statusText">44×44 · 1,936칸</span></footer>
 </div>
+<dialog id="projectDialog"><h3>📁 내 공장 프로젝트 보관함</h3><p>현재 회사 PC의 이 브라우저에 저장됩니다. 저장된 구조도는 목록에서 선택해 다시 수정할 수 있어요.</p>
+<div id="projectList" class="projectList"><div class="libraryEmpty">저장한 프로젝트가 아직 없어요.</div></div>
+<div id="storageUsage" class="libraryNote"></div>
+<div class="libraryActions"><button id="newProjectBtn">+ 새 프로젝트</button><button id="saveCopyBtn">다른 이름으로 저장</button><button id="importProjectBtn">PC 파일 불러오기</button><button id="backupAllBtn">전체 백업</button><button id="restoreBackupBtn">백업 복원</button></div>
+<p class="libraryNote">주의: 브라우저의 사이트 데이터 삭제, 다른 PC·다른 브라우저에서는 목록이 유지되지 않을 수 있어요. 중요한 구조도는 전체 백업을 권장해요.</p>
+<div class="end"><button id="closeProjectBtn" class="confirm">닫기</button></div></dialog>
+<input type="file" id="backupPicker" accept=".json,application/json" hidden/>
 <dialog id="exportDialog"><h3>사업계획서용 PNG 출력</h3><p>구조도만 투명 배경으로 출력하면 나중에 설비 이미지와 번호를 PPT에서 합성할 수 있어요.</p>
 <label><input type="radio" name="exportType" value="structure" checked/> <span><b>건물 구조만</b> (자동 맞춤 확대 · 투명 배경 · 격자 및 사물 제외)</span></label><label><input type="radio" name="exportType" value="scene"/><span><b>작업 화면 전체</b> (그리드 및 사물 포함)</span></label>
 <label for="exportResolution">해상도</label><select id="exportResolution"><option value="1920">1920 × 1080</option><option value="3840" selected>3840 × 2160 (4K)</option></select>
 <div class="end"><button id="exportClose">취소</button><button id="exportConfirm" class="confirm">PNG 내보내기</button></div></dialog>
 <script type="module">
-/* WORKFIT Factory Layout Editor V2.0 - Three.js r187
+/* WORKFIT Factory Layout Editor V2.4 - Three.js r187
    Copyright (c) OpenAI, project implementation.
    Three.js MIT license; loaded from public CDN at runtime.
 */
@@ -93,19 +100,23 @@ if (!THREE) {
 }
 const COLORS = {
   grid:'#485462', base:'#171c23', baseSide:'#242b35', basic:'#cbd4de', dark:'#647180',
-  safety:'#e7c24f', wall:'#dfe5ec', wallSide:'#abb7c5', glass:'#7ab9db', windowBar:'#6f8295'
+  safety:'#e7c24f', green:'#327963', parking:'#555e66', wall:'#dfe5ec', wallSide:'#abb7c5', glass:'#7ab9db', windowBar:'#6f8295'
 };
 const ITEMS = {
-  floor:[{id:'basic',label:'기본 바닥',icon:'◇',color:COLORS.basic},{id:'dark',label:'진회색',icon:'◆',color:COLORS.dark},{id:'safety',label:'노란 안전',icon:'◇',color:COLORS.safety}],
+  floor:[{id:'basic',label:'기본 바닥',icon:'◇',color:COLORS.basic},{id:'dark',label:'진회색',icon:'◆',color:COLORS.dark},{id:'safety',label:'노란 안전',icon:'◇',color:COLORS.safety},{id:'green',label:'초록색 공장',icon:'▰',color:COLORS.green},{id:'parking',label:'주차장 (1×2)',icon:'🅿',color:COLORS.parking}],
   wall:[{id:'plain',label:'기본 벽',icon:'▥',color:'#b7c6d7'},{id:'window',label:'창문 벽',icon:'▤',color:'#a9d0e6'},{id:'door',label:'출입구',icon:'▣',color:'#c2cad5'}],
-  box:[{id:'small',label:'박스 (소)',icon:'📦',color:'#c99154'},{id:'medium',label:'박스 (중)',icon:'📦',color:'#bf8750'},{id:'large',label:'박스 (대)',icon:'📦',color:'#ad7447'}],
-  vehicle:[{id:'forklift',label:'지게차',icon:'🚜',color:'#f0bf36'},{id:'cart',label:'운반차',icon:'🚚',color:'#889bad'},{id:'handlift',label:'핸드리프트',icon:'🛒',color:'#e1b73e'}]
+  box:[{id:'small',label:'박스 (소)',icon:'📦',color:'#c99154'},{id:'medium',label:'박스 (중)',icon:'📦',color:'#bf8750'},{id:'large',label:'박스 (대)',icon:'📦',color:'#ad7447'},
+    {id:'bulkBox',label:'대형 박스 · 1칸',icon:'▣',color:'#c99253'},{id:'stackBoxes',label:'박스 적재 · 1칸',icon:'▥',color:'#b77a4b'},{id:'boxCluster',label:'박스 묶음 · 2×2',icon:'▦',color:'#c99360'},
+    {id:'rackSmall',label:'창고 랙 · 1칸',icon:'▤',color:'#69849a'},{id:'rackMedium',label:'창고 랙 · 1×2',icon:'▤',color:'#547589'},{id:'rackLarge',label:'창고 랙 · 2×2',icon:'▥',color:'#536d83'},{id:'warehouseSet',label:'창고 세트 · 2×2',icon:'▦',color:'#668396'}],
+  vehicle:[{id:'forklift',label:'지게차',icon:'🚜',color:'#f0bf36'},{id:'cart',label:'운반차 · 1×2',icon:'🛺',color:'#f0bf36'},{id:'miniCart',label:'소형 운반차 · 1칸',icon:'🛻',color:'#f3bd2c'},{id:'truck',label:'트럭 · 1×2',icon:'🚚',color:'#d9e1e8'},{id:'passenger',label:'승용차 · 1×2',icon:'🚙',color:'#478fbe'},{id:'handlift',label:'핸드리프트',icon:'🛒',color:'#e1b73e'},{id:'elcart',label:'엘카트',icon:'🛒',color:'#26a06d'}],
+  person:[{id:'cleanWhite',label:'방진복 · 흰색',icon:'♙',color:'#e6ebf0'},{id:'cleanOrange',label:'방진복 · 주황',icon:'♙',color:'#ed8b26'},{id:'cleanMint',label:'방진복 · 민트',icon:'♙',color:'#76bfa4'},{id:'cleanNavy',label:'방진복 · 남색',icon:'♙',color:'#354c70'},
+    {id:'worker',label:'안전모 작업자',icon:'♟',color:'#59738d'},{id:'manager',label:'도면 보는 관리자',icon:'♟',color:'#283e58'},{id:'inspector',label:'설비 점검자',icon:'♟',color:'#68808f'},{id:'vest',label:'안전조끼 작업자',icon:'♟',color:'#ee9b37'},{id:'visitor',label:'현장 방문자',icon:'♟',color:'#424a58'}]
 };
-const CATEGORIES = {floor:'바닥',wall:'벽',box:'박스',vehicle:'차량'};
+const CATEGORIES = {floor:'바닥',wall:'벽',box:'박스',vehicle:'차량',person:'인물'};
 const s = {
-  cols:44, rows:44, floors:new Map(), walls:new Map(), objects:new Map(), serial:1,
+  cols:44, rows:44, floors:new Map(), parkingSlots:new Map(), walls:new Map(), objects:new Map(), serial:1,
   category:'floor', variant:'basic', tool:null, selection:null, moving:null, erase:false,
-  yaw:Math.PI/4, elevation:THREE.MathUtils.degToRad(52), zoom:1.15, target:new THREE.Vector3(22,0,22),
+  yaw:Math.PI/4, elevation:THREE.MathUtils.degToRad(55), zoom:1.15, target:new THREE.Vector3(22,0,22), brushSize:1, currentProjectId:null, topViewRestore:null,
   hover:null, hoverEdge:null, mouse:{x:0,y:0}, drag:null,
   exportPending:false, history:[]
 };
@@ -135,7 +146,10 @@ canvasHost.appendChild(renderer.domElement);
 const canvas=renderer.domElement;
 const scene = new THREE.Scene();
 scene.background = new THREE.Color('#e8eef5');
-const camera = new THREE.OrthographicCamera(-20,20,20,-20,0.1,600);
+// Physically correct perspective: tiles near the camera appear larger than distant tiles.
+// A top-down camera is provided when a square-on-screen grid is needed.
+const CAMERA_FOV=55;
+const camera = new THREE.PerspectiveCamera(CAMERA_FOV,1,0.1,1500);
 const hemi = new THREE.HemisphereLight('#ffffff','#a7b5c8',2.1); scene.add(hemi);
 const sun = new THREE.DirectionalLight('#fff6e9',2.7);
 sun.position.set(-22,48,-30);
@@ -152,6 +166,7 @@ sun.shadow.normalBias=.025;
 scene.add(sun);
 const staticGroup = new THREE.Group();scene.add(staticGroup);
 const floorGroup = new THREE.Group();scene.add(floorGroup);
+const parkingGroup = new THREE.Group();scene.add(parkingGroup);
 const wallGroup = new THREE.Group();scene.add(wallGroup);
 const objectGroup = new THREE.Group();scene.add(objectGroup);
 const ghostGroup = new THREE.Group();scene.add(ghostGroup);
@@ -164,13 +179,18 @@ const buildingParts=new Map();
 const rayObjects=[];
 const mat = (color, extra={}) => new THREE.MeshStandardMaterial({color,roughness:.78, metalness:.04,...extra});
 const materials = {
-  basic:mat(COLORS.basic,{roughness:.97}), dark:mat(COLORS.dark,{roughness:.98}), safety:mat(COLORS.safety,{roughness:.95}),
+  basic:mat(COLORS.basic,{roughness:.97}), dark:mat(COLORS.dark,{roughness:.98}), safety:mat(COLORS.safety,{roughness:.95}),green:mat(COLORS.green,{roughness:.91}),parking:mat(COLORS.parking,{roughness:.99}),parkingMark:mat('#f8fafb',{roughness:.98,emissive:'#283038',emissiveIntensity:.1}),
   wall:mat(COLORS.wall), wallSide:mat(COLORS.wallSide),
   glass:new THREE.MeshPhysicalMaterial({color:COLORS.glass,roughness:.11,metalness:.04,transparent:true,opacity:.40,side:THREE.DoubleSide,depthWrite:false}),
   frame:mat(COLORS.windowBar,{metalness:.25}),
   cardboard:mat('#c89559'), tape:mat('#e3c69d'), wood:mat('#aa7a4b'),
-  yellow:mat('#f1c23e',{metalness:.19}), black:mat('#333c46',{metalness:.12}), silver:mat('#a9b7c2',{metalness:.35}),
-  line:new THREE.LineBasicMaterial({color:0x273442,transparent:true,opacity:.32})
+  yellow:mat('#f1c23e',{metalness:.19}), black:mat('#30373f',{metalness:.12}), silver:mat('#a9b7c2',{metalness:.35}), truckCab:mat('#f4c13f',{roughness:.42}), truckCargo:mat('#e0e7ed'), carBlue:mat('#377aa9',{metalness:.16,roughness:.39}), carGlass:mat('#78aec4',{metalness:.22,roughness:.17}), greenDeck:mat('#259568',{roughness:.74}), whiteMetal:mat('#d9dfe6',{metalness:.55}), wheelRubber:mat('#252c34'), wheelHub:mat('#bcc5cc',{metalness:.52}), brakeRed:mat('#d34b3e'),
+  line:new THREE.LineBasicMaterial({color:0x273442,transparent:true,opacity:.32}),
+  rackFrame:mat('#71869b',{metalness:.42,roughness:.58}),rackBeam:mat('#e4bd4a',{metalness:.28}),rackDeck:mat('#a3afb9',{metalness:.30}),cartonLight:mat('#dcc194'),cartonDark:mat('#b78a58'),
+  cleanWhite:mat('#e5e9ee'),cleanOrange:mat('#e9902a'),cleanMint:mat('#7bbfa8'),cleanNavy:mat('#394e71'),
+  workerBlue:mat('#617c94'),managerNavy:mat('#2e445e'),inspectorGray:mat('#6e8290'),visitorJacket:mat('#4b5665'),
+  hardhat:mat('#f6c84e'),whiteHardhat:mat('#ecf0f5'),safetyVest:mat('#f09a37'),reflective:mat('#dae4e8'),
+  skin:mat('#bba594'),mask:mat('#d5e2ed'),boots:mat('#5c6570'),visor:mat('#90b4c8',{roughness:.25}),clipboard:mat('#a8bacb')
 };
 const geomFloor=new THREE.PlaneGeometry(1,1);
 geomFloor.rotateX(-Math.PI/2);
@@ -187,6 +207,37 @@ function addEdges(parent,mesh,opacity=.32) {
 }
 function setEntityRefs(group,type,id){group.userData.entity={type,id};group.traverse(o=>{if(o.isMesh)o.userData.entity={type,id}})}
 function tileKey(x,z){return `${x}:${z}`}
+// Building footprints: the selected cell is a stable anchor. A 1×2 item occupies
+// that cell and one adjacent cell; after four quarter-turns it is unchanged.
+function isLongVehicle(o){return o.category==='vehicle'&&['truck','passenger','cart'].includes(o.variant)}
+const DIRECTIONS=[[0,1],[1,0],[0,-1],[-1,0]];
+const LARGE_STORAGE=new Set(['rackLarge','warehouseSet','boxCluster']);
+const LONG_STORAGE=new Set(['rackMedium']);
+function footprintCells(x,z,category,variant,rotation=0){
+  // A 2x2 square asset keeps the *same* four occupied cells while rotated.
+  if(category==='box'&&LARGE_STORAGE.has(variant))return [{x,z},{x:x+1,z},{x,z:z+1},{x:x+1,z:z+1}];
+  const elongated=category==='parking'||(category==='vehicle'&&['truck','passenger','cart'].includes(variant))||(category==='box'&&LONG_STORAGE.has(variant));
+  if(!elongated)return [{x,z}];
+  const [dx,dz]=DIRECTIONS[((rotation%4)+4)%4];return [{x,z},{x:x+dx,z:z+dz}];
+}
+function objectCells(o){return footprintCells(o.x,o.z,o.category,o.variant,o.rotation||0)}
+function parkingCells(p){return footprintCells(p.x,p.z,'parking','parking',p.rotation||0)}
+function inBounds(c){return c.x>=0&&c.z>=0&&c.x<s.cols&&c.z<s.rows}
+function parkingAt(x,z){for(const slot of s.parkingSlots.values())if(parkingCells(slot).some(c=>c.x===x&&c.z===z))return slot;return null}
+function objectOnAny(cells){return [...s.objects.values()].some(o=>objectCells(o).some(a=>cells.some(b=>a.x===b.x&&a.z===b.z)))}
+function canPlaceParking(x,z,rotation,excludeId=null){
+ const cells=footprintCells(x,z,'parking','parking',rotation);
+ return cells.every(c=>inBounds(c)&&(!parkingAt(c.x,c.z)||parkingAt(c.x,c.z).id===excludeId));
+}
+function getParkingCenter(slot){const cs=parkingCells(slot);return new THREE.Vector3((cs[0].x+cs[1].x)/2+.5,0,(cs[0].z+cs[1].z)/2+.5)}
+function getObjectCenter(o){const cs=objectCells(o);return new THREE.Vector3((cs[0].x+cs[cs.length-1].x)/2+.5,0,(cs[0].z+cs[cs.length-1].z)/2+.5)}
+function clearParkingSlot(slot){if(!slot)return;for(const c of parkingCells(slot))if(s.floors.get(tileKey(c.x,c.z))==='parking')s.floors.delete(tileKey(c.x,c.z));s.parkingSlots.delete(slot.id)}
+function clearParkingOverlapping(cells){const ids=new Set();for(const c of cells){const p=parkingAt(c.x,c.z);if(p)ids.add(p.id)}for(const id of ids)clearParkingSlot(s.parkingSlots.get(id))}
+function cleanupUnsupported(){
+ for(const [id,o] of s.objects)if(!objectCells(o).every(c=>inBounds(c)&&s.floors.has(tileKey(c.x,c.z))))s.objects.delete(id);
+ for(const [id,w] of s.walls)if(!sideAllowed(edgeOf(w)))s.walls.delete(id);
+}
+
 function edgeKey(e){return `${e.axis}:${e.x}:${e.z}`}
 function edgeFor(x,z,side){
   if(side===0)return {axis:'h',x,z};
@@ -224,16 +275,55 @@ function rebuildBoard(){
   perimeter.position.set(s.cols/2,-.083,s.rows/2);staticGroup.add(perimeter);
   sun.target.position.set(s.cols/2,0,s.rows/2);scene.add(sun.target);
 }
-function buildFloorMesh(x,z,type){
- const mesh=new THREE.Mesh(geomFloor,materials[type]||materials.basic);
- mesh.position.set(x+.5,.028,z+.5);mesh.receiveShadow=true;mesh.userData.entity={type:'floor',id:tileKey(x,z)};
- // Thin grid marking on top of placed floor, not raised blocks
- const edge=new THREE.LineSegments(tileEdges,new THREE.LineBasicMaterial({color:'#748190',transparent:true,opacity:.38}));
- edge.position.set(x+.5,.028,z+.5);floorGroup.add(mesh,edge);return mesh;
-}
 function rebuildFloor(){
+  // Tiles are true 1 x 1 world-space squares. Use instanced planes to keep
+  // even 44x55 full-floor painting smooth in a normal office browser.
   clearGroup(floorGroup);
-  for(const [k,type] of s.floors){const [x,z]=k.split(':').map(Number);buildFloorMesh(x,z,type)}
+  const byType={basic:[],dark:[],safety:[],green:[],parking:[]};
+  for(const [k,t] of s.floors)if(byType[t])byType[t].push(k);
+  const dummy=new THREE.Object3D();
+  for(const [type,keys] of Object.entries(byType)){
+    if(!keys.length)continue;
+    const inst=new THREE.InstancedMesh(geomFloor,materials[type],keys.length);
+    inst.userData.tileKeys=keys;inst.userData.tileType=type;
+    inst.receiveShadow=true;inst.castShadow=false;
+    const edges=[];
+    keys.forEach((k,i)=>{
+      const [x,z]=k.split(':').map(Number);
+      dummy.position.set(x+.5,.028,z+.5);dummy.rotation.set(0,0,0);dummy.scale.set(1,1,1);dummy.updateMatrix();inst.setMatrixAt(i,dummy.matrix);
+      const y=.035;
+      edges.push(x,y,z,x+1,y,z,x+1,y,z,x+1,y,z+1,x+1,y,z+1,x,y,z+1,x,y,z+1,x,y,z);
+    });
+    inst.instanceMatrix.needsUpdate=true;inst.computeBoundingSphere();floorGroup.add(inst);
+    const geo=new THREE.BufferGeometry();geo.setAttribute('position',new THREE.Float32BufferAttribute(edges,3));
+    const outlines=new THREE.LineSegments(geo,new THREE.LineBasicMaterial({color:'#738191',transparent:true,opacity:.39}));
+    outlines.userData.disposeMaterial=true;floorGroup.add(outlines);
+  }
+}
+function rebuildParking(){
+ clearGroup(parkingGroup);
+ // One continuous white painted rectangle surrounds each 1×2 parking bay.
+ for(const p of s.parkingSlots.values()){
+   const mid=getParkingCenter(p), g=new THREE.Group();
+   const marker=materials.parkingMark;
+   const strip=(wid,dep,x,z)=>box(g,wid,.012,dep,marker,x,.062,z,false);
+   strip(.058,1.90,-.46,0);strip(.058,1.90,.46,0);
+   strip(.98,.058,0,-.95);strip(.98,.058,0,.95);
+   // Subtle front stop line to read as a proper parking place.
+   strip(.74,.027,0,.71);
+   g.position.set(mid.x,0,mid.z);g.rotation.y=(p.rotation||0)*Math.PI/2;
+   g.userData.parkingSlotId=p.id;parkingGroup.add(g);
+ }
+}
+function toggleParkingVisible(id,visible){const g=parkingGroup.children.find(g=>g.userData.parkingSlotId===id);if(g)g.visible=visible}
+function toggleFloorVisible(k,visible){
+ for(const o of floorGroup.children)if(o.isInstancedMesh&&o.userData.tileKeys){
+   const i=o.userData.tileKeys.indexOf(k);
+   if(i<0)continue;
+   const [x,z]=k.split(':').map(Number);const dummy=new THREE.Object3D();
+   dummy.position.set(x+.5,.028,z+.5);dummy.scale.setScalar(visible?1:0);dummy.updateMatrix();
+   o.setMatrixAt(i,dummy.matrix);o.instanceMatrix.needsUpdate=true;return;
+ }
 }
 function buildWallGeometry(w,ghost=false,valid=true){
   const e=edgeOf(w), group=new THREE.Group(), h=1.95, thick=.12;
@@ -277,6 +367,7 @@ function rebuildWalls(){
   for(const [id,w] of s.walls){const group=buildWallGeometry(w);wallGroup.add(group);buildingParts.set('wall:'+id,group)}
 }
 function buildBox(o,ghost=false,valid=true){
+ if(['bulkBox','stackBoxes','boxCluster','rackSmall','rackMedium','rackLarge','warehouseSet'].includes(o.variant))return buildStorage(o,ghost,valid);
  const group=new THREE.Group();const scale=o.variant==='small'?.46:o.variant==='medium'?.67:.84;
  const matBox=ghost?mat(valid?'#66b3ff':'#f26e80',{transparent:true,opacity:.32}):materials.cardboard;
  const matWood=ghost?matBox:materials.wood;
@@ -295,44 +386,279 @@ function buildBox(o,ghost=false,valid=true){
  if(!ghost)setEntityRefs(group,'object',o.id);
  return group;
 }
-function wheel(parent,x,z,matWheel){const mesh=new THREE.Mesh(new THREE.CylinderGeometry(.095,.095,.085,14),matWheel);mesh.rotation.x=Math.PI/2;mesh.position.set(x,.13,z);mesh.castShadow=true;parent.add(mesh);return mesh;}
+function buildStorage(o,ghost=false,valid=true){
+ const group=new THREE.Group();
+ const tint=ghost?mat(valid?'#68b5ff':'#ec7182',{transparent:true,opacity:.34,depthWrite:false}):null;
+ const frame=tint||materials.rackFrame,beam=tint||materials.rackBeam,deck=tint||materials.rackDeck;
+ const cardboard=tint||materials.cardboard,cardAlt=tint||materials.cartonLight,wood=tint||materials.wood;
+ const key=o.variant;
+ function carton(x,y,z,w=.25,h=.28,d=.27,alternate=false){
+   const mesh=box(group,w,h,d,alternate?cardAlt:cardboard,x,y,z);
+   if(!ghost){box(group,.016,.004,d*.91,materials.tape,x,y+h/2+.003,z,false)}
+   return mesh;
+ }
+ function shelfRack(width,depth,height,levels=3,offsetX=0,offsetZ=0,fill=0.78){
+   const px=width/2-.035,pz=depth/2-.035;
+   for(const x of [-px,px])for(const z of [-pz,pz])box(group,.055,height,.055,frame,offsetX+x,height/2,offsetZ+z);
+   for(let j=0;j<levels;j++){
+     const y=.24+j*(height-.34)/Math.max(1,levels-1);
+     box(group,width,.047,depth,deck,offsetX,y,offsetZ);
+     box(group,width,.061,.055,beam,offsetX,y+.025,offsetZ-depth/2+.035);
+     box(group,width,.061,.055,beam,offsetX,y+.025,offsetZ+depth/2-.035);
+     if(fill>0&&j<levels-1){
+       const bays=depth>1.1?3:depth>.8?2:1;
+       const lanes=width>1.1?3:2;
+       for(let a=0;a<lanes;a++)for(let b=0;b<bays;b++){
+         if(((a+2*b+j)%7)/7>fill)continue;
+         const bx=offsetX+(a-(lanes-1)/2)*(width-.22)/lanes;
+         const bz=offsetZ+(b-(bays-1)/2)*(depth-.19)/bays;
+         const w=(width-.19)/lanes*.78,d=(depth-.19)/bays*.78;
+         carton(bx,y+.05+.15,bz,w,.28,d,(a+b+j)%2===1)
+       }
+     }
+   }
+ }
+ if(key==='bulkBox'){
+   box(group,.75,.10,.73,wood,0,.08,0);
+   carton(0,.48,0,.70,.72,.65);
+ }else if(key==='stackBoxes'){
+   box(group,.76,.10,.72,wood,0,.08,0);
+   for(let j=0;j<2;j++)for(let i=0;i<2;i++){
+     carton((i-.5)*.38,.31+j*.33,(j%2===0?-.17:.17),.35,.31,.32,(i+j)%2===0);
+   }
+ }else if(key==='boxCluster'){
+   // 2x2 storage cluster, deliberately smaller than its allocated footprint.
+   for(let i=0;i<2;i++)for(let k=0;k<2;k++){
+     const x=(i-.5)*.87,z=(k-.5)*.87;
+     box(group,.72,.10,.72,wood,x,.07,z);
+     for(let j=0;j<2;j++)carton(x,.30+j*.30,z,.66,.27,.65,(i+k+j)%2===0);
+   }
+ }else if(key==='rackSmall'){
+   shelfRack(.80,.75,1.27,3);
+ }else if(key==='rackMedium'){
+   // Local Z is the 2-cell long dimension, matching vehicle turn conventions.
+   shelfRack(.80,1.70,1.52,4);
+ }else if(key==='rackLarge'){
+   shelfRack(1.73,1.73,1.95,4);
+ }else if(key==='warehouseSet'){
+   // Two parallel racks with a visible central access aisle inside 2x2 cells.
+   shelfRack(.76,1.65,1.75,4,-.50,0,.85);
+   shelfRack(.76,1.65,1.75,4,.50,0,.83);
+ }
+ const center=getObjectCenter(o);
+ group.position.set(center.x,.035,center.z);
+ group.rotation.y=(o.rotation||0)*Math.PI/2;
+ if(ghost)group.traverse(ch=>{if(ch.isMesh&&ch.material===tint)ch.userData.disposeMaterial=true});
+ else setEntityRefs(group,'object',o.id);
+ return group;
+}
+function wheel(parent,x,z,radius=.105,material=materials.wheelRubber){
+ const w=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,.09,20),material);
+ w.rotation.z=Math.PI/2;w.position.set(x,radius+.035,z);w.castShadow=true;parent.add(w);
+ const hub=new THREE.Mesh(new THREE.CylinderGeometry(radius*.45,radius*.45,.097,16),materials.wheelHub);
+ hub.rotation.z=Math.PI/2;hub.position.copy(w.position);hub.castShadow=false;parent.add(hub);return w;
+}
 function buildVehicle(o,ghost=false,valid=true){
- const group=new THREE.Group();const main=ghost?mat(valid?'#6aafff':'#ed6577',{transparent:true,opacity:.35}):materials.yellow;
- const blk=ghost?main:materials.black, slv=ghost?main:materials.silver;
+ const group=new THREE.Group();
+ const main=ghost?mat(valid?'#6aafff':'#ed6577',{transparent:true,opacity:.35,depthWrite:false}):materials.yellow;
+ const blk=ghost?main:materials.black,slv=ghost?main:materials.silver;
+ const yellow=ghost?main:materials.yellow,steel=ghost?main:materials.whiteMetal;
+ const glass=ghost?main:materials.carGlass,cargo=ghost?main:materials.truckCargo;
  if(o.variant==='forklift'){
    box(group,.67,.18,.44,main,-.05,.25,0);box(group,.34,.20,.34,blk,-.12,.44,0);
-   for(const x of [-.33,.28])for(const z of [-.24,.24])wheel(group,x,z,blk);
+   for(const x of [-.33,.28])for(const z of [-.24,.24])wheel(group,x,z,.11,blk);
    for(const x of [-.27,.10])for(const z of [-.19,.19])box(group,.04,.73,.04,blk,x,.72,z);
-   box(group,.39,.05,.41,blk,-.09,1.11,0);
-   box(group,.07,.82,.07,blk,.38,.65,0);
+   box(group,.39,.05,.41,blk,-.09,1.11,0);box(group,.07,.82,.07,blk,.38,.65,0);
    box(group,.05,.70,.05,blk,.46,.65,0);
    for(const z of [-.14,.14])box(group,.45,.045,.055,slv,.58,.115,z);
  }else if(o.variant==='cart'){
-   box(group,.83,.12,.52,main,0,.28,0);
-   box(group,.42,.19,.35,slv,-.20,.45,0);
-   for(const x of [-.28,.28])for(const z of [-.26,.26])wheel(group,x,z,blk);
-   box(group,.10,.06,.50,blk,.37,.38,0);
+   // Photo-inspired electric tow truck with a driver's seat and a rear flat platform.
+   box(group,.82,.15,1.82,blk,0,.28,0);
+   box(group,.86,.095,1.03,slv,0,.40,.40);
+   for(const x of [-.33,.33])for(const z of [-.69,.72])wheel(group,x,z,.13,blk);
+   for(const x of [-.39,.39])box(group,.035,.26,1.03,blk,x,.58,.40);
+   box(group,.76,.35,.58,yellow,0,.50,-.57);
+   box(group,.48,.12,.30,blk,0,.80,-.52);
+   box(group,.46,.43,.09,blk,0,.99,-.35);
+   box(group,.055,.55,.06,slv,-.23,.84,-.70);
+   const steer=new THREE.Mesh(new THREE.TorusGeometry(.16,.026,8,18),blk);
+   steer.rotation.x=-Math.PI/3;steer.position.set(-.23,1.08,-.72);group.add(steer);
+   box(group,.65,.40,.04,blk,0,.80,.93);
+   for(const x of [-.31,.31])box(group,.035,.41,.04,blk,x,.81,.90);
+   for(const x of [-.24,.24])box(group,.11,.10,.04,steel,x,.48,-.875,false);
+ }else if(o.variant==='miniCart'){
+   // One-cell compact electric transport cart: front yellow driver canopy,
+   // single black seat, steering wheel and a short open rear loading bed.
+   // The actual mesh fits inside 0.80 × 0.95 of one floor tile.
+   const deck=ghost?main:materials.silver;
+   box(group,.72,.13,.89,blk,0,.27,0); // compact chassis
+   // Four visible rubber tires with pale metal hubs.
+   for(const x of [-.29,.29])for(const z of [-.31,.31])wheel(group,x,z,.091,blk);
+   // Rounded yellow front cowl and its dark bumper.
+   box(group,.70,.34,.22,yellow,0,.47,-.33);
+   box(group,.72,.10,.085,blk,0,.28,-.45);
+   for(const x of [-.25,.25])box(group,.090,.085,.016,steel,x,.50,-.450,false);
+   // Driver's foot deck, padded seat and upright seat back.
+   box(group,.55,.055,.33,deck,0,.39,-.14);
+   box(group,.28,.085,.22,blk,-.04,.60,-.11);
+   box(group,.28,.34,.075,blk,-.04,.78,-.015);
+   // Steering column and a recognisable circular wheel.
+   box(group,.027,.32,.027,blk,-.13,.67,-.29);
+   const wheelRing=new THREE.Mesh(new THREE.TorusGeometry(.105,.017,7,20),blk);
+   wheelRing.rotation.x=-Math.PI/3;wheelRing.position.set(-.13,.82,-.31);group.add(wheelRing);
+   // Short rear flatbed and low safety sides, no tall cargo box.
+   box(group,.71,.075,.41,deck,0,.44,.245);
+   box(group,.035,.16,.40,yellow,-.35,.54,.245);
+   box(group,.035,.16,.40,yellow,.35,.54,.245);
+   box(group,.69,.16,.035,yellow,0,.54,.45);
+   // Open yellow canopy: slender posts and softened top rail.
+   for(const x of [-.31,.31]){
+     box(group,.038,.84,.038,yellow,x,.84,-.37);
+     box(group,.035,.77,.035,yellow,x,.83,.005);
+     const arch=new THREE.CatmullRomCurve3([
+       new THREE.Vector3(x,1.19,-.37),
+       new THREE.Vector3(x,1.27,-.30),
+       new THREE.Vector3(x,1.28,-.10),
+       new THREE.Vector3(x,1.19,.005)
+     ]);
+     const rail=new THREE.Mesh(new THREE.TubeGeometry(arch,14,.023,6,false),yellow);
+     rail.castShadow=true;group.add(rail);
+   }
+   box(group,.66,.028,.055,yellow,0,1.24,-.13);
+ }else if(o.variant==='truck'){
+   // 1×2 high-cab box truck; visibly taller than a passenger car.
+   box(group,.79,.16,1.84,blk,0,.34,0);
+   for(const x of [-.39,.39])for(const z of [-.70,.69])wheel(group,x,z,.15,blk);
+   box(group,.80,.62,.72,ghost?main:materials.truckCab,0,.72,-.57);
+   box(group,.73,.16,.67,ghost?main:materials.truckCab,0,1.11,-.57);
+   box(group,.67,.32,.018,glass,0,.88,-.94,false);
+   for(const x of [-.409,.409])box(group,.018,.30,.37,glass,x,.88,-.53,false);
+   box(group,.81,.88,1.02,cargo,0,.88,.42);
+   box(group,.82,.06,1.05,steel,0,1.34,.42);
+   for(const x of [-.26,.26])box(group,.13,.085,.035,steel,x,.59,-.949,false);
+   for(const x of [-.30,.30])box(group,.12,.08,.03,ghost?main:materials.brakeRed,x,.49,.96,false);
+ }else if(o.variant==='passenger'){
+   // 1×2 sedan with distinct roof, windshield and headlights.
+   const body=ghost?main:materials.carBlue;
+   box(group,.78,.29,1.73,body,0,.36,0);
+   for(const x of [-.37,.37])for(const z of [-.58,.60])wheel(group,x,z,.13,blk);
+   box(group,.70,.30,.86,body,0,.65,.09);
+   box(group,.61,.28,.05,glass,0,.69,-.36,false);
+   box(group,.61,.25,.05,glass,0,.69,.54,false);
+   for(const x of [-.358,.358])box(group,.027,.25,.72,glass,x,.69,.10,false);
+   box(group,.71,.07,.55,body,0,.83,.08);
+   for(const x of [-.25,.25])box(group,.15,.065,.025,steel,x,.40,-.877,false);
+   for(const x of [-.25,.25])box(group,.12,.058,.025,ghost?main:materials.brakeRed,x,.40,.876,false);
+ }else if(o.variant==='elcart'){
+   // Photo-inspired green low platform trolley with tall white tubular handle.
+   const deck=ghost?main:materials.greenDeck;
+   box(group,.79,.065,.74,deck,0,.24,0);
+   for(const x of [-.30,.30])for(const z of [-.28,.28])wheel(group,x,z,.075,ghost?main:materials.brakeRed);
+   for(const x of [-.31,.31])box(group,.032,.75,.032,steel,x,.68,.32);
+   box(group,.65,.032,.032,steel,0,1.065,.32);
+   box(group,.65,.025,.025,steel,0,.74,.32);
  }else{
    for(const z of [-.17,.17])box(group,.68,.045,.085,main,.08,.09,z);
-   box(group,.13,.13,.47,main,-.27,.19,0);
-   box(group,.055,.70,.055,blk,-.34,.54,0);
-   box(group,.13,.06,.06,blk,-.34,.89,0);
-   wheel(group,-.27,0,blk);
+   box(group,.13,.13,.47,main,-.27,.19,0);box(group,.055,.70,.055,blk,-.34,.54,0);
+   box(group,.13,.06,.06,blk,-.34,.89,0);wheel(group,-.27,0,.095,blk);
  }
- group.position.set(o.x+.5,.025,o.z+.5);group.rotation.y=o.rotation*Math.PI/2;
- if(ghost)group.traverse(ch=>{if(ch.isMesh)ch.userData.disposeMaterial=true});
+ // Reserved footprint and rendered size are independent: real cars need
+ // clearance within a parking bay. Keep 1×2 occupancy for passenger cars.
+ if(o.variant==='passenger')group.scale.setScalar(.80); // .62 wide × 1.38 long
+ if(o.variant==='elcart')group.scale.setScalar(.73); // compact 1-cell hand trolley
+ const center=getObjectCenter(o);group.position.set(center.x,.025,center.z);
+ group.rotation.y=(o.rotation||0)*Math.PI/2;
+ if(ghost)group.traverse(ch=>{if(ch.isMesh&&ch.material===main)ch.userData.disposeMaterial=true});
  if(!ghost)setEntityRefs(group,'object',o.id);
+ return group;
+}
+function buildPerson(o,ghost=false,valid=true){
+ // Every variant is ONE person: same silhouette/scale, with no logos or identities.
+ const group=new THREE.Group();const kind=o.variant;
+ const clean=kind.startsWith('clean');
+ const tint=ghost?mat(valid?'#61adff':'#f17a88',{transparent:true,opacity:.34,depthWrite:false}):null;
+ const clothing=kind==='cleanWhite'?materials.cleanWhite:kind==='cleanOrange'?materials.cleanOrange:
+   kind==='cleanMint'?materials.cleanMint:kind==='cleanNavy'?materials.cleanNavy:
+   kind==='worker'?materials.workerBlue:kind==='manager'?materials.managerNavy:
+   kind==='inspector'?materials.inspectorGray:kind==='vest'?materials.workerBlue:materials.visitorJacket;
+ const suit=tint||clothing,skin=tint||materials.skin,helmet=tint||materials.hardhat;
+ const shoes=tint||(clean?materials.cleanWhite:materials.boots);
+ function sphere(radius,material,x,y,z,segments=10){
+   const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius,segments,8),material);
+   mesh.position.set(x,y,z);mesh.castShadow=true;group.add(mesh);return mesh;
+ }
+ function limb(w,h,d,material,x,y,z,angle=0){
+   const item=box(group,w,h,d,material,x,y,z);item.rotation.z=angle;return item;
+ }
+ // Same body dimensions across all eight types, recognisable from above.
+ for(const sign of [-1,1]){
+   limb(.115,.36,.145,suit,sign*.10,.36,.005,sign*.025);
+   box(group,.145,.085,.23,shoes,sign*.10,.128,-.047);
+ }
+ box(group,.35,.42,.22,suit,0,.76,0);
+ box(group,.11,.12,.115,suit,0,1.01,0);
+ const inspector=kind==='inspector',manager=kind==='manager';
+ const armRightAngle=inspector?Math.PI*.38:manager?-.16:-.085;
+ for(const sign of [-1,1]){
+   const isRight=sign===1;
+   const angle=isRight?armRightAngle:.085;
+   limb(.105,.36,.115,suit,sign*.235,inspector&&isRight?.93:.79,0,angle);
+   sphere(.064,tint||(clean?materials.cleanWhite:materials.skin),sign*(inspector&&isRight?.39:.25),inspector&&isRight?1.10:.58,-.018,8);
+ }
+ if(clean){
+   sphere(.173,suit,0,1.18,0); // full coverage hood
+   box(group,.198,.080,.020,tint||materials.visor,0,1.195,-.160,false);
+   box(group,.193,.045,.025,tint||materials.mask,0,1.118,-.162,false);
+ }else{
+   sphere(.148,skin,0,1.17,0);
+   const hardmat=kind==='visitor'?tint||materials.whiteHardhat:helmet;
+   const hardhat=sphere(.164,hardmat,0,1.260,0);
+   hardhat.scale.set(1,.63,1);
+   box(group,.31,.031,.20,hardmat,0,1.255,-.070,false); // helmet brim
+   // Basic face mask ensures a consistent, anonymous simplified figure.
+   box(group,.16,.055,.018,tint||materials.mask,0,1.126,-.143,false);
+ }
+ if(kind==='vest'){
+   // Safety vest worn over the same shared human body.
+   box(group,.288,.33,.016,tint||materials.safetyVest,0,.77,-.120,false);
+   for(const x of [-.105,.105])box(group,.036,.32,.022,tint||materials.reflective,x,.77,-.132,false);
+   box(group,.274,.035,.020,tint||materials.reflective,0,.70,-.135,false);
+ }
+ if(kind==='worker'||kind==='inspector'){
+   // Grey uniform, yellow hardhat, simple safety identification stripes.
+   box(group,.28,.045,.012,tint||materials.reflective,0,.83,-.117,false);
+ }
+ if(kind==='manager'){
+   // White schematic clipboard: model-only prop, no text or logo.
+   const file=box(group,.255,.32,.028,tint||materials.clipboard,-.23,.68,-.18,false);
+   file.rotation.z=-.24;
+   box(group,.12,.025,.035,tint||materials.rackFrame,-.20,.83,-.195,false);
+ }
+ if(kind==='inspector'){
+   // Raised hand inspects a machine; no separate machine included.
+   box(group,.07,.035,.07,tint||materials.whiteHardhat,.42,1.12,-.035);
+ }
+ if(kind==='visitor'){
+   box(group,.28,.30,.008,tint||materials.whiteHardhat,0,.78,-.113,false);
+   box(group,.30,.035,.014,tint||materials.reflective,0,.89,-.119,false);
+ }
+ group.position.set(o.x+.5,.035,o.z+.5);
+ group.rotation.y=(o.rotation||0)*Math.PI/2;
+ // The character is substantially smaller than the full 1x1 cell.
+ group.scale.setScalar(.88);
+ if(ghost)group.traverse(ch=>{if(ch.isMesh&&ch.material===tint)ch.userData.disposeMaterial=true});
+ else setEntityRefs(group,'object',o.id);
  return group;
 }
 function rebuildObjects(){
  clearGroup(objectGroup);
- for(const [id,o] of s.objects){const group=o.category==='box'?buildBox(o):buildVehicle(o);objectGroup.add(group);buildingParts.set('object:'+id,group)}
+ for(const [id,o] of s.objects){const group=o.category==='box'?buildBox(o):o.category==='person'?buildPerson(o):buildVehicle(o);objectGroup.add(group);buildingParts.set('object:'+id,group)}
 }
 function rebuildAll(){
-  buildingParts.clear();rebuildBoard();rebuildFloor();rebuildWalls();rebuildObjects();updateStatus();scheduleDraw();
+  buildingParts.clear();rebuildBoard();rebuildFloor();rebuildParking();rebuildWalls();rebuildObjects();updateStatus();scheduleDraw();
 }
 function rebuildAfterEdit(){
-  buildingParts.clear();rebuildFloor();rebuildWalls();rebuildObjects();updateStatus();scheduleDraw();
+  buildingParts.clear();rebuildFloor();rebuildParking();rebuildWalls();rebuildObjects();updateStatus();scheduleDraw();
 }
 function markSelected(){
   clearGroup(highlightGroup);
@@ -343,8 +669,12 @@ function markSelected(){
   if(group){
     const b=new THREE.Box3().setFromObject(group);const helper=new THREE.Box3Helper(b,new THREE.Color('#368fff'));highlightGroup.add(helper);
   }else if(s.selection.kind==='floor'){
-    const [x,z]=s.selection.id.split(':').map(Number);
-    const g=new THREE.EdgesGeometry(new THREE.BoxGeometry(1,.012,1));const lines=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:'#369bff'}));lines.position.set(x+.5,.075,z+.5);highlightGroup.add(lines)
+    const [x,z]=s.selection.id.split(':').map(Number);const slot=parkingAt(x,z);
+    const g=new THREE.EdgesGeometry(new THREE.BoxGeometry(slot?1.93:1,.012,slot?1.93:1));
+    const lines=new THREE.LineSegments(g,new THREE.LineBasicMaterial({color:'#369bff'}));
+    if(slot){const v=getParkingCenter(slot);lines.geometry.dispose();lines.geometry=new THREE.EdgesGeometry(new THREE.BoxGeometry(1,.012,2));lines.position.set(v.x,.075,v.z);lines.rotation.y=slot.rotation*Math.PI/2;}
+    else lines.position.set(x+.5,.075,z+.5);
+    highlightGroup.add(lines)
   }
 }
 function makeGhostGroup(){
@@ -354,14 +684,24 @@ function makeGhostGroup(){
   const cell=s.hover;
   const valid=canPlace(activity,cell,s.hoverEdge);
   const tint=valid?'#61a8ff':'#fa657c';
-  if(activity.kind==='floor'){
-    const mesh=new THREE.Mesh(geomFloor,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.48,side:THREE.DoubleSide,depthWrite:false}));mesh.position.set(cell.x+.5,.07,cell.z+.5);mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);
+  if(activity.kind==='parking'){
+    const rot=activity.rotation||0,cs=footprintCells(cell.x,cell.z,'parking','parking',rot),mid=getObjectCenter({x:cell.x,z:cell.z,category:'parking',variant:'parking',rotation:rot});
+    const geo=new THREE.PlaneGeometry(1,2);geo.rotateX(-Math.PI/2);
+    const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.38,side:THREE.DoubleSide,depthWrite:false}));
+    mesh.position.set(mid.x,.09,mid.z);mesh.rotation.y=rot*Math.PI/2;mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);
+  }else if(activity.kind==='floor'){
+    const a=floorBrushArea(cell,s.moving?1:s.brushSize);
+    if(a){const geo=new THREE.PlaneGeometry(a.n,a.n);geo.rotateX(-Math.PI/2);
+      const mesh=new THREE.Mesh(geo,new THREE.MeshBasicMaterial({color:tint,transparent:true,opacity:.35,side:THREE.DoubleSide,depthWrite:false}));
+      mesh.position.set(a.x+a.n/2,.065,a.z+a.n/2);mesh.userData.disposeMaterial=true;ghostGroup.add(mesh);}
   } else if(activity.kind==='wall'&&s.hoverEdge){
-    const w={id:-1,x:cell.x,z:cell.z,baseSide:s.hoverEdge.side,turn:0,type:activity.variant};
-    ghostGroup.add(buildWallGeometry(w,true,valid));
+    for(const w of wallBrushSegments(cell,s.hoverEdge,s.moving?1:s.brushSize)){
+      const wValid=sideAllowed(edgeOf(w))&&isWallValid(w,s.moving?.id??null);
+      ghostGroup.add(buildWallGeometry({...w,id:-1},true,wValid));
+    }
   } else if(activity.kind==='object'){
     const o={id:-1,x:cell.x,z:cell.z,category:activity.category,variant:activity.variant,rotation:activity.rotation||0};
-    ghostGroup.add(activity.category==='box'?buildBox(o,true,valid):buildVehicle(o,true,valid));
+    ghostGroup.add(activity.category==='box'?buildBox(o,true,valid):activity.category==='person'?buildPerson(o,true,valid):buildVehicle(o,true,valid));
   }
 }
 function pointerToWorld(cx,cy){
@@ -377,6 +717,31 @@ function hitCell(world){
   const x=Math.floor(world.x),z=Math.floor(world.z);
   if(x<0||z<0||x>=s.cols||z>=s.rows)return null;
   return {x,z};
+}
+function floorBrushArea(cell,span=s.brushSize){
+  if(!cell)return null;
+  const n=Math.max(1,Math.min(4,span));
+  return {x:Math.min(Math.max(0,cell.x-Math.floor((n-1)/2)),s.cols-n),z:Math.min(Math.max(0,cell.z-Math.floor((n-1)/2)),s.rows-n),n};
+}
+function wallBrushSegments(cell,edgeData,span=s.brushSize){
+  if(!cell||!edgeData)return [];
+  const n=Math.max(1,Math.min(4,span));
+  // A wall is attached to grid edges, not centered on a tile.
+  // North/south edges extend along X, east/west edges along Z.
+  const horizontal=edgeData.edge.axis==='h';
+  let first=horizontal?Math.min(Math.max(0,cell.x-Math.floor((n-1)/2)),s.cols-n):Math.min(Math.max(0,cell.z-Math.floor((n-1)/2)),s.rows-n);
+  return Array.from({length:n},(_,i)=>{
+    const x=horizontal?first+i:cell.x;
+    const z=horizontal?cell.z:first+i;
+    return {x,z,baseSide:edgeData.side,turn:0,type:s.variant};
+  });
+}
+function canBrushFloor(cell){
+ const a=floorBrushArea(cell,s.moving?1:s.brushSize);return !!a&&a.x>=0&&a.z>=0&&a.x+a.n<=s.cols&&a.z+a.n<=s.rows;
+}
+function canBrushWall(cell,edgeData){
+ const chunks=wallBrushSegments(cell,edgeData,s.moving?1:s.brushSize);
+ return chunks.length>0 && chunks.every(w=>s.floors.has(tileKey(w.x,w.z))&&isWallValid(w,s.moving?.id??null));
 }
 function nearestSide(world,cell){
   if(!world||!cell)return null;
@@ -407,28 +772,29 @@ function computeHover(cx,cy){
   s.hoverEdge=s.hover?nearestSide(pt,s.hover):null;
   makeGhostGroup();scheduleDraw();
 }
-function objectAtCell(c){for(const [id,o] of s.objects)if(o.x===c.x&&o.z===c.z)return id;return null}
+function objectAtCell(c,exclude=null){for(const [id,o] of s.objects){if(id!==exclude&&objectCells(o).some(cell=>cell.x===c.x&&cell.z===c.z))return id}return null} 
 function canPlace(activity,c,edgeData){
   if(!c)return false;
+  if(activity.kind==='parking')return canPlaceParking(c.x,c.z,activity.rotation||0,s.moving?.id??null);
   if(activity.kind==='floor'){
-    if(!s.moving)return true;
+    if(!s.moving)return canBrushFloor(c);
     return !s.floors.has(tileKey(c.x,c.z)) || (s.moving.originalKey===tileKey(c.x,c.z));
   }
-  if(!s.floors.has(tileKey(c.x,c.z)))return false;
+  if(activity.kind!=='object'&&!s.floors.has(tileKey(c.x,c.z)))return false;
   if(activity.kind==='wall'){
     if(!edgeData)return false;
-    const candidate={x:c.x,z:c.z,baseSide:edgeData.side,turn:0};
-    return isWallValid(candidate,s.moving?.id||null);
+    return canBrushWall(c,edgeData);
   }
   if(activity.kind==='object'){
-    const occupied=objectAtCell(c);return occupied===null||occupied===s.moving?.id;
+    const cells=footprintCells(c.x,c.z,activity.category,activity.variant,activity.rotation||0);
+    return cells.every(p=>inBounds(p)&&s.floors.has(tileKey(p.x,p.z))&&objectAtCell(p,s.moving?.id??null)===null);
   }
   return false;
 }
 function disposeSceneLater(){/* simple controlled meshes disposed when rebuilt */}
 function mutate(action){
   s.history.push(JSON.stringify(snapshotData()));if(s.history.length>40)s.history.shift();
-  action();markSelected();rebuildAfterEdit();makeGhostGroup();
+  action();cleanupUnsupported();markSelected();rebuildAfterEdit();makeGhostGroup();
 }
 function attachPickHandlers(){/* initialized once below */}
 function pickEntity(clientX,clientY){
@@ -438,6 +804,9 @@ function pickEntity(clientX,clientY){
  const roots=[...wallGroup.children,...objectGroup.children,...floorGroup.children.filter(o=>o.isMesh)];
  const hits=raycaster.intersectObjects(roots,true);
  for(const hit of hits){
+   if(hit.object.isInstancedMesh&&hit.object.userData.tileKeys&&Number.isInteger(hit.instanceId)){
+     return {kind:'floor',id:hit.object.userData.tileKeys[hit.instanceId]};
+   }
    if(hit.object.userData.entity){
      const e=hit.object.userData.entity;return {kind:e.type,id:e.id};
    }
@@ -446,8 +815,8 @@ function pickEntity(clientX,clientY){
 }
 function selectedAnchor(){
  if(!s.selection)return null;
- if(s.selection.kind==='floor'){const [x,z]=s.selection.id.split(':').map(Number);return new THREE.Vector3(x+.5,.24,z+.5)}
- if(s.selection.kind==='object'){const o=s.objects.get(s.selection.id);if(o)return new THREE.Vector3(o.x+.5,1.6,o.z+.5)}
+ if(s.selection.kind==='floor'){const [x,z]=s.selection.id.split(':').map(Number);const slot=parkingAt(x,z);if(slot){const p=getParkingCenter(slot);p.y=.26;return p}return new THREE.Vector3(x+.5,.24,z+.5)}
+  if(s.selection.kind==='object'){const o=s.objects.get(s.selection.id);if(o){const p=getObjectCenter(o);p.y=o.category==='person'?1.55:o.category==='box'&&o.variant.startsWith('rack')?2.25:o.category==='box'&&o.variant==='warehouseSet'?2.2:isLongVehicle(o)?1.8:1.6;return p}}
  if(s.selection.kind==='wall'){const o=s.walls.get(s.selection.id);if(o){const e=edgeOf(o);return new THREE.Vector3(e.axis==='h'?e.x+.5:e.x,2.4,e.axis==='h'?e.z:e.z+.5)}}
  return null;
 }
@@ -459,24 +828,51 @@ function updateToolbar(){
  toolbar.style.left=`${Math.max(75,Math.min(r.width-75,px))}px`;
  toolbar.style.top=`${Math.max(12,Math.min(r.height-50,py-30))}px`;
  toolbar.hidden=false;
- const rotDisabled=s.selection.kind==='floor';
+ const rotDisabled=s.selection.kind==='floor'&&!parkingAt(...s.selection.id.split(':').map(Number));
  $('rotateLeft').disabled=rotDisabled;
  $('rotateRight').disabled=rotDisabled;
 }
+function viewDirection(){
+ const cp=Math.cos(s.elevation),sp=Math.sin(s.elevation);
+ return new THREE.Vector3(Math.sin(s.yaw)*cp,sp,Math.cos(s.yaw)*cp);
+}
+function aimCamera(target,distance){
+ camera.position.copy(target).addScaledVector(viewDirection(),distance);
+ camera.up.set(0,1,0);
+ camera.lookAt(target);
+ camera.updateMatrixWorld();
+}
+function getSceneDistance(){
+ // Fixed with respect to yaw/pitch. Rotation must NEVER feel like zooming.
+ // The base board is measured in true square 1×1 world units.
+ return Math.hypot(s.cols,s.rows)*1.30/s.zoom;
+}
 function rebuildCamera(){
  const host=canvasHost.getBoundingClientRect();
- const w=Math.max(300,host.width),h=Math.max(200,host.height);
- const aspect=w/h;
- const diag=Math.hypot(s.cols,s.rows);
- const viewHeight=diag*1.28/s.zoom;
- camera.left=-viewHeight*aspect/2;camera.right=viewHeight*aspect/2;
- camera.top=viewHeight/2;camera.bottom=-viewHeight/2;
+ const w=Math.max(1,host.width),h=Math.max(1,host.height);
+ camera.aspect=w/h;
+ camera.fov=CAMERA_FOV;
  camera.updateProjectionMatrix();
- const distance=diag*2.1;
- const cp=Math.cos(s.elevation),sp=Math.sin(s.elevation);
- camera.position.set(s.target.x+Math.sin(s.yaw)*cp*distance,sp*distance,s.target.z+Math.cos(s.yaw)*cp*distance);
- camera.up.set(0,1,0);camera.lookAt(s.target);
- camera.updateMatrixWorld();
+ aimCamera(s.target,getSceneDistance());
+}
+function fitPerspectiveDistance(target,bounds,aspect){
+ // Solve the perspective frustum against every bounding-box corner.
+ // This keeps exports accurately fitted, rather than cropping near walls.
+ aimCamera(target,10);
+ const right=new THREE.Vector3(1,0,0).applyQuaternion(camera.quaternion);
+ const up=new THREE.Vector3(0,1,0).applyQuaternion(camera.quaternion);
+ const towardCamera=new THREE.Vector3(0,0,1).applyQuaternion(camera.quaternion);
+ const tanY=Math.tan(THREE.MathUtils.degToRad(CAMERA_FOV/2));
+ const margin=.87;
+ let distance=4;
+ for(const x of [bounds.minX,bounds.maxX])for(const z of [bounds.minZ,bounds.maxZ])for(const y of [bounds.minY,bounds.maxY]){
+   const relative=new THREE.Vector3(x,y,z).sub(target);
+   const depth=relative.dot(towardCamera);
+   const requiredX=Math.abs(relative.dot(right))/(tanY*aspect*margin);
+   const requiredY=Math.abs(relative.dot(up))/(tanY*margin);
+   distance=Math.max(distance,depth+Math.max(requiredX,requiredY));
+ }
+ return distance*1.07;
 }
 let raf=0;
 function scheduleDraw(){if(raf)return;raf=requestAnimationFrame(()=>{raf=0;draw()})}
@@ -486,14 +882,18 @@ function toast(message,isError=false){
  clearTimeout(toast.timer);toast.timer=setTimeout(()=>el.classList.remove('visible'),3600);
 }
 function updateStatus(){
- safeText('statusText',`${s.cols}×${s.rows} · ${(s.cols*s.rows).toLocaleString()}칸   |   바닥 ${s.floors.size} · 벽 ${s.walls.size} · 설치물 ${s.objects.size}`);
+ safeText('statusText',`${s.cols}×${s.rows} · ${(s.cols*s.rows).toLocaleString()}칸   |   바닥 ${s.floors.size} · 주차면 ${s.parkingSlots.size} · 벽 ${s.walls.size} · 설치물 ${s.objects.size}`);
  const cur=s.moving?'기존 설치물 이동 중':s.tool?`${CATEGORIES[s.category]} · ${ITEMS[s.category].find(v=>v.id===s.variant)?.label} 배치 중`:s.selection?'설치물 선택됨':'템플릿 선택 모드';
- safeText('modeName',cur);
+ safeText('modeName',s.tool&&(s.tool.kind==='floor'||s.tool.kind==='wall'||s.tool.kind==='parking')?`${cur} · ${s.tool.kind==='floor'?`${s.brushSize}×${s.brushSize}칸`:s.tool.kind==='parking'?'1×2칸':`${s.brushSize}칸 길이`}`:cur);
 }
 function setCategory(name){
  s.category=name;
  document.querySelectorAll('[data-category]').forEach(b=>b.classList.toggle('active',b.dataset.category===name));
  safeText('sideTitle',`${CATEGORIES[name]} 템플릿`);
+ const row=$('brushRow');row.style.display=(name==='floor'||name==='wall')?'flex':'none';
+ safeText('brushLabel',name==='wall'?'벽 길이':'바닥 붓 크기');
+ const selector=$('brushSelect');for(const opt of selector.options){const n=Number(opt.value);opt.textContent=name==='wall'?`${n}칸 연속`:`${n}×${n} (${n*n}칸)`}
+ selector.value=String(s.brushSize);
  const panel=$('assetList');panel.replaceChildren();
  for(const item of ITEMS[name]){
    const b=document.createElement('button');b.className='asset';b.type='button';b.dataset.variant=item.id;
@@ -503,9 +903,10 @@ function setCategory(name){
  }
 }
 function beginBuild(name,type){
- s.tool={kind:name==='floor'?'floor':name==='wall'?'wall':'object',category:name,variant:type,rotation:0};
+ s.tool={kind:name==='floor'&&type==='parking'?'parking':name==='floor'?'floor':name==='wall'?'wall':'object',category:name,variant:type,rotation:0};
+ $('brushRow').style.display=name==='floor'&&type==='parking'?'none':(name==='floor'||name==='wall')?'flex':'none';
  s.category=name;s.variant=type;s.selection=null;s.moving=null;s.erase=false;
- $('app').classList.add('building');$('editorLabel').textContent=`${CATEGORIES[name]} 배치 중 · ESC 선택 창`;updateStatus();
+ $('app').classList.add('building');$('editorLabel').textContent=`${CATEGORIES[name]} 배치 중 · ${['vehicle','box','person'].includes(name)||type==='parking'?'R 방향 변경 · ':''}ESC 선택 창`;updateStatus();
  canvas.focus();makeGhostGroup();scheduleDraw();
 }
 function exitBuild(){
@@ -517,6 +918,20 @@ function exitBuild(){
 function startMove(){
  if(!s.selection)return;
  const t=s.selection,orig=t.kind==='floor'?s.floors.get(t.id):t.kind==='wall'?s.walls.get(t.id):s.objects.get(t.id);
+ if(t.kind==='floor'&&orig==='parking'){
+   const [x,z]=t.id.split(':').map(Number),slot=parkingAt(x,z);if(!slot)return;
+   const cs=parkingCells(slot);
+   if(objectOnAny(cs)||[...s.walls.values()].some(w=>cs.some(c=>dependentWall(w,c.x,c.z)))){
+     toast('주차장에 연결된 설치물이나 벽을 먼저 옮겨 주세요.',true);return;
+   }
+   s.moving={kind:'parking',id:slot.id,originalKey:t.id,data:structuredClone(slot),category:'parking',variant:'parking',rotation:slot.rotation};
+   s.selection=null;markSelected();
+   for(const p of cs)toggleFloorVisible(tileKey(p.x,p.z),false);
+   toggleParkingVisible(slot.id,false);
+   $('app').classList.add('building');$('editorLabel').textContent='주차장 이동 · R 방향 변경 · ESC 취소';
+   updateStatus();makeGhostGroup();scheduleDraw();return;
+ }
+
  if(!orig)return;
  if(t.kind==='floor'){
    const [x,z]=t.id.split(':').map(Number);
@@ -526,16 +941,19 @@ function startMove(){
  }
  s.moving={kind:t.kind,id:t.id,originalKey:t.id,data:structuredClone(orig),category:orig.category,variant:t.kind==='floor'?orig:orig.type||orig.variant,rotation:orig.rotation||0};
  s.selection=null;markSelected();
- const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):floorGroup.children.find(m=>m.userData.entity?.id===t.id);
- if(grp)grp.visible=false;
+ const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):null;
+ if(t.kind==='floor')toggleFloorVisible(t.id,false);else if(grp)grp.visible=false;
  $('app').classList.add('building');$('editorLabel').textContent='이동 중 · 위치 클릭으로 확정 · ESC 취소';
  updateStatus();makeGhostGroup();scheduleDraw();
 }
 function restoreMove(){
  if(!s.moving)return;
  const t=s.moving;
- const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):floorGroup.children.find(m=>m.userData.entity?.id===t.id);
- if(grp)grp.visible=true;
+ const grp=t.kind==='wall'?buildingParts.get('wall:'+t.id):t.kind==='object'?buildingParts.get('object:'+t.id):null;
+ if(t.kind==='floor')toggleFloorVisible(t.id,true);
+ else if(t.kind==='parking'){
+  const slot=s.parkingSlots.get(t.id);if(slot){for(const c of parkingCells(slot))toggleFloorVisible(tileKey(c.x,c.z),true);toggleParkingVisible(slot.id,true)}
+ }else if(grp)grp.visible=true;
  s.moving=null;clearGroup(ghostGroup);$('app').classList.remove('building');updateStatus();scheduleDraw();
 }
 function resolveClick(clientX,clientY){
@@ -552,21 +970,39 @@ function resolveClick(clientX,clientY){
    if(s.moving){
       const t=s.moving;
       mutate(()=>{
-        if(t.kind==='floor'){
+        if(t.kind==='parking'){
+          const slot=s.parkingSlots.get(t.id);if(slot){
+            for(const c of parkingCells(slot))s.floors.delete(tileKey(c.x,c.z));
+            slot.x=cell.x;slot.z=cell.z;slot.rotation=t.rotation||0;
+            for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');
+          }
+        }else if(t.kind==='floor'){
           s.floors.delete(t.id);s.floors.set(tileKey(cell.x,cell.z),t.data);
         }else if(t.kind==='wall'){
           const w=s.walls.get(t.id);w.x=cell.x;w.z=cell.z;w.baseSide=nearest.side;w.turn=0;
         }else{
-          const o=s.objects.get(t.id);o.x=cell.x;o.z=cell.z;
+          const o=s.objects.get(t.id);o.x=cell.x;o.z=cell.z;o.rotation=t.rotation??o.rotation;
         }
       });
       s.moving=null;s.tool=null;$('app').classList.remove('building');$('editorLabel').textContent='설치물 선택 모드';
       clearGroup(ghostGroup);updateStatus();scheduleDraw();return;
    }
-   if(activity.kind==='floor'){
-     mutate(()=>s.floors.set(tileKey(cell.x,cell.z),activity.variant));
+   if(activity.kind==='parking'){
+     mutate(()=>{
+       const id=++s.serial,slot={id,x:cell.x,z:cell.z,rotation:activity.rotation||0};
+       s.parkingSlots.set(id,slot);
+       for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');
+     });
+   }else if(activity.kind==='floor'){
+     const a=floorBrushArea(cell);
+     mutate(()=>{
+       const area=[];for(let dx=0;dx<a.n;dx++)for(let dz=0;dz<a.n;dz++)area.push({x:a.x+dx,z:a.z+dz});
+       clearParkingOverlapping(area);
+       for(const p of area)s.floors.set(tileKey(p.x,p.z),activity.variant);
+     });
    }else if(activity.kind==='wall'){
-     const id=++s.serial;mutate(()=>s.walls.set(id,{id,x:cell.x,z:cell.z,baseSide:nearest.side,turn:0,type:activity.variant}));
+     const chunks=wallBrushSegments(cell,nearest);
+     mutate(()=>{for(const w of chunks){const id=++s.serial;s.walls.set(id,{id,...w})}});
    }else{
      const id=++s.serial;
      mutate(()=>s.objects.set(id,{id,x:cell.x,z:cell.z,category:activity.category,variant:activity.variant,rotation:activity.rotation}));
@@ -585,9 +1021,9 @@ function removeEntity(sel){
  if(!sel)return;
  mutate(()=>{
   if(sel.kind==='floor'){
-    const [x,z]=sel.id.split(':').map(Number);
-    s.floors.delete(sel.id);
-    for(const [id,o] of s.objects)if(o.x===x&&o.z===z)s.objects.delete(id);
+    const [x,z]=sel.id.split(':').map(Number),slot=parkingAt(x,z);
+    if(slot)clearParkingSlot(slot);else s.floors.delete(sel.id);
+    for(const [id,o] of s.objects)if(!objectCells(o).every(c=>s.floors.has(tileKey(c.x,c.z))))s.objects.delete(id);
     for(const [id,w] of s.walls){
       const e=edgeOf(w);
       if(!sideAllowedAfterRemoval(e))s.walls.delete(id);
@@ -601,7 +1037,21 @@ function sideAllowedAfterRemoval(e){return sideAllowed(e)}
 function rotateSelection(dir){
  if(!s.selection)return;
  const target=s.selection;
- if(target.kind==='floor'){toast('바닥은 회전해도 모양이 같습니다.');return}
+ if(target.kind==='floor'){
+   const [x,z]=target.id.split(':').map(Number),slot=parkingAt(x,z);
+   if(!slot){toast('일반 바닥은 회전해도 모양이 같습니다.');return}
+   if(objectOnAny(parkingCells(slot))){toast('주차한 차량을 먼저 이동해 주세요.',true);return}
+   const rot=(slot.rotation+dir+4)%4;
+   if(!canPlaceParking(slot.x,slot.z,rot,slot.id)){toast('회전할 주차 공간에 빈 자리가 없어요.',true);return}
+   mutate(()=>{
+     for(const c of parkingCells(slot))s.floors.delete(tileKey(c.x,c.z));
+     slot.rotation=rot;
+     for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');
+     target.id=tileKey(slot.x,slot.z);
+   });
+   markSelected();scheduleDraw();return;
+ }
+
  if(target.kind==='wall'){
    const w=s.walls.get(target.id);if(!w)return;
    const next={...w,turn:(w.turn+dir+4)%4};
@@ -609,45 +1059,134 @@ function rotateSelection(dir){
    mutate(()=>{w.turn=next.turn});
  }else{
    const o=s.objects.get(target.id);if(!o)return;
-   mutate(()=>o.rotation=(o.rotation+dir+4)%4);
+   const next=(o.rotation+dir+4)%4;
+   if(!footprintCells(o.x,o.z,o.category,o.variant,next).every(c=>inBounds(c)&&s.floors.has(tileKey(c.x,c.z))&&objectAtCell(c,o.id)===null)){
+     toast('회전할 방향의 타일이 없거나 다른 설치물이 있어요.',true);return;
+   }
+   mutate(()=>o.rotation=next);
  }
  markSelected();scheduleDraw();
 }
 function snapshotData(){
- return {format:'WORKFIT_3D_FACTORY',version:2,cols:s.cols,rows:s.rows,floors:[...s.floors],walls:[...s.walls.values()],objects:[...s.objects.values()],serial:s.serial,camera:{yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:[s.target.x,s.target.z]}};
+ return {format:'WORKFIT_3D_FACTORY',version:3,cols:s.cols,rows:s.rows,floors:[...s.floors],parkingSlots:[...s.parkingSlots.values()],walls:[...s.walls.values()],objects:[...s.objects.values()],serial:s.serial,camera:{yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:[s.target.x,s.target.z]}};
 }
 function saveBlob(name,blob){
  const url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download=name;document.body.appendChild(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),15000);
 }
 function getProjectName(){const name=$('projectName').value.trim().replace(/[\\/:*?"<>|]/g,'_');return name||'WORKFIT_공장배치도'}
-function saveProject(){
- try{const payload=JSON.stringify(snapshotData(),null,2);saveBlob(getProjectName()+'.workfit',new Blob([payload],{type:'application/json;charset=utf-8'}));toast('프로젝트 파일 저장을 요청했어요. 브라우저 다운로드 목록을 확인해 주세요.');}
- catch(e){toast('프로젝트 파일 저장이 차단됐어요. 브라우저 다운로드 설정을 확인해 주세요.',true)}
+// Personal project cabinet: saved only to IndexedDB in this browser/origin.
+// No server upload, no automatic sync across PCs.
+const DB_NAME='WORKFIT_Factory_Projects', DB_VERSION=1, DB_STORE='projects';
+let dbPromise=null;
+function openProjectDb(){
+ if(dbPromise)return dbPromise;
+ dbPromise=new Promise((resolve,reject)=>{
+  if(!('indexedDB' in window)){reject(new Error('이 브라우저는 프로젝트 보관함을 지원하지 않습니다.'));return;}
+  const req=indexedDB.open(DB_NAME,DB_VERSION);
+  req.onupgradeneeded=()=>{if(!req.result.objectStoreNames.contains(DB_STORE))req.result.createObjectStore(DB_STORE,{keyPath:'id'})};
+  req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('저장소 열기 실패'));
+ });
+ return dbPromise.catch(e=>{dbPromise=null;throw e});
+}
+async function dbAction(mode,fn){
+ const db=await openProjectDb();
+ return new Promise((resolve,reject)=>{
+  const tx=db.transaction(DB_STORE,mode),store=tx.objectStore(DB_STORE);
+  let value;try{const req=fn(store);if(req){req.onsuccess=()=>{value=req.result};req.onerror=()=>reject(req.error||new Error('DB 요청 실패'))}}catch(err){reject(err);return}
+  tx.oncomplete=()=>resolve(value);tx.onerror=()=>reject(tx.error||new Error('저장소 쓰기 오류'));tx.onabort=()=>reject(tx.error||new Error('저장소 작업 취소'));
+ });
+}
+async function listLibrary(){const all=await dbAction('readonly',st=>st.getAll());return (all||[]).sort((a,b)=>(b.updatedAt||0)-(a.updatedAt||0))}
+function uniqueId(){return globalThis.crypto?.randomUUID?.()||`${Date.now()}-${Math.random().toString(36).slice(2)}`}
+async function saveToLibrary(copy=false){
+ try{
+  if(copy){const input=prompt('새 프로젝트 이름을 입력하세요.',getProjectName()+' 복사본');if(input===null)return;const newName=input.trim();if(!newName){toast('프로젝트 이름을 입력해 주세요.',true);return}$('projectName').value=newName}
+  const id=!copy&&s.currentProjectId?s.currentProjectId:uniqueId(),now=Date.now();
+  const record={id,name:getProjectName(),updatedAt:now,grid:`${s.cols}×${s.rows}`,floors:s.floors.size,walls:s.walls.size,objects:s.objects.size,data:snapshotData()};
+  await dbAction('readwrite',st=>st.put(record));s.currentProjectId=id;
+  toast(`'${record.name}' 프로젝트를 이 브라우저에 저장했어요.`);
+  if($('projectDialog').open)await renderProjectLibrary();
+ }catch(err){console.warn(err);toast('브라우저 보관함에 저장하지 못했어요. 디스크 공간 또는 사이트 데이터 권한을 확인해 주세요.',true)}
+}
+async function renderProjectLibrary(){
+ const list=$('projectList');list.replaceChildren();
+ try{
+  const all=await listLibrary();
+  if(!all.length){const p=document.createElement('div');p.className='libraryEmpty';p.textContent='저장한 프로젝트가 아직 없어요. 상단 저장 버튼으로 첫 구조도를 보관해 보세요.';list.appendChild(p)}
+  for(const record of all){
+   const row=document.createElement('div');row.className='projectItem';
+   const meta=document.createElement('div');meta.className='projectMeta';
+   const title=document.createElement('strong');title.textContent=record.name+(record.id===s.currentProjectId?' · 편집 중':'');
+   const info=document.createElement('small');const dt=new Date(record.updatedAt);info.textContent=`${record.grid||'그리드 미확인'} · 바닥 ${record.floors??'?'}칸 · ${dt.toLocaleString('ko-KR')}`;meta.append(title,info);
+   const open=document.createElement('button');open.textContent='열기';open.onclick=()=>{if(!confirm(`'${record.name}'을(를) 불러올까요? 현재 저장하지 않은 변경 사항은 사라집니다.`))return;try{loadSnapshot(record.data);s.currentProjectId=record.id;$('projectName').value=record.name;$('projectDialog').close();toast('저장한 공장 구조도를 불러왔어요.')}catch(e){console.error(e);toast('프로젝트 열기에 실패했어요.',true)}};
+   const rename=document.createElement('button');rename.textContent='이름 변경';rename.onclick=async()=>{const v=prompt('변경할 프로젝트 이름',record.name);if(v===null||!v.trim())return;record.name=v.trim();record.updatedAt=Date.now();await dbAction('readwrite',st=>st.put(record));if(s.currentProjectId===record.id)$('projectName').value=record.name;await renderProjectLibrary()};
+   const del=document.createElement('button');del.className='delete';del.textContent='삭제';del.onclick=async()=>{if(!confirm(`'${record.name}' 프로젝트를 이 PC에서 완전히 삭제할까요?`))return;await dbAction('readwrite',st=>st.delete(record.id));if(s.currentProjectId===record.id)s.currentProjectId=null;await renderProjectLibrary()};
+   row.append(meta,open,rename,del);list.appendChild(row);
+  }
+  const estimate=await navigator.storage?.estimate?.();
+  const usage=estimate?.usage??0,quota=estimate?.quota??0;
+  $('storageUsage').textContent=quota?`브라우저 사이트 저장공간: 약 ${(usage/1048576).toFixed(1)}MB 사용 / ${(quota/1048576).toFixed(0)}MB 허용 추정 · 프로젝트 ${all.length}개`:`저장된 프로젝트 ${all.length}개 · 사이트 저장공간 사용량은 브라우저에서 관리합니다.`;
+ }catch(err){console.warn(err);list.textContent='이 브라우저에서 저장소에 접근할 수 없어요. 일반 창에서 다시 시도해 주세요.';$('storageUsage').textContent='중요한 작업은 PC 프로젝트 파일로 백업하는 것을 권장합니다.'}
+}
+async function exportLibraryBackup(){
+ try{
+  const projects=await listLibrary();
+  const body={format:'WORKFIT_FACTORY_LIBRARY',version:1,exportedAt:new Date().toISOString(),projects};
+  saveBlob(`WORKFIT_공장프로젝트_전체백업_${new Date().toISOString().slice(0,10)}.json`,new Blob([JSON.stringify(body,null,2)],{type:'application/json'}));
+  toast(`프로젝트 ${projects.length}개 백업을 다운로드 요청했어요.`);
+ }catch(err){toast('전체 백업에 실패했어요.',true)}
+}
+async function importLibraryBackup(file){
+ if(!file)return;
+ try{
+  const data=JSON.parse(await file.text());if(data.format!=='WORKFIT_FACTORY_LIBRARY'||!Array.isArray(data.projects))throw new Error('백업 형식 아님');
+  if(!confirm(`백업에 포함된 프로젝트 ${data.projects.length}개를 현재 보관함에 추가할까요? 기존 이름과 같아도 별도 프로젝트로 저장합니다.`))return;
+  const db=await openProjectDb();
+  await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,'readwrite'),store=tx.objectStore(DB_STORE);
+    for(const item of data.projects)if(item?.data?.format==='WORKFIT_3D_FACTORY')store.put({...item,id:uniqueId()});
+    tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);
+  });
+  await renderProjectLibrary();toast('프로젝트 백업을 복원했어요.');
+ }catch(e){console.warn(e);toast('올바른 WORKFIT 전체 백업 파일이 아니에요.',true)}
+}
+function newBlankProject(){
+ if(!confirm('새 공장 구조도를 시작할까요? 저장하지 않은 현재 변경 사항은 사라집니다.'))return;
+ s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.serial=1;s.currentProjectId=null;
+ s.tool=null;s.selection=null;s.moving=null;s.erase=false;s.history=[];
+ s.target.set(s.cols/2,0,s.rows/2);s.zoom=1.15;
+ $('projectName').value='새_공장_구조도';$('app').classList.remove('building');
+ rebuildAll();markSelected();clearGroup(ghostGroup);$('projectDialog').close();toast('새 프로젝트를 시작했어요.');
 }
 function loadSnapshot(data){
  if(!data||data.format!=='WORKFIT_3D_FACTORY'||!Number.isInteger(data.cols)||!Number.isInteger(data.rows)||!Array.isArray(data.floors))throw new Error('유효하지 않은 WORKFIT 파일');
  if(![[33,33],[44,44],[33,44],[44,55]].some(([a,b])=>a===data.cols&&b===data.rows))throw new Error('지원하지 않는 그리드 크기');
  s.cols=data.cols;s.rows=data.rows;
- s.floors=new Map(data.floors.filter(x=>Array.isArray(x)&&typeof x[0]==='string'&&['basic','dark','safety'].includes(x[1])));
+ s.floors=new Map(data.floors.filter(x=>Array.isArray(x)&&typeof x[0]==='string'&&['basic','dark','safety','green','parking'].includes(x[1])));
+ s.parkingSlots=new Map((data.parkingSlots||[]).filter(p=>Number.isInteger(p.id)&&Number.isInteger(p.x)&&Number.isInteger(p.z)&&Number.isInteger(p.rotation)).map(p=>[p.id,p]));
+ // Backward-compatible: V2.0 / V2.2 have no parking slots.
+ for(const [key,value] of [...s.floors])if(value==='parking'){
+   const [x,z]=key.split(':').map(Number);if(!parkingAt(x,z))s.floors.delete(key);
+ }
  s.walls=new Map((data.walls||[]).filter(w=>Number.isInteger(w.id)&&['plain','window','door'].includes(w.type)).map(w=>[w.id,w]));
- s.objects=new Map((data.objects||[]).filter(o=>Number.isInteger(o.id)&&['box','vehicle'].includes(o.category)).map(o=>[o.id,o]));
- s.serial=data.serial||Math.max(1,...s.walls.keys(),...s.objects.keys());
+ s.objects=new Map((data.objects||[]).filter(o=>Number.isInteger(o.id)&&['box','vehicle','person'].includes(o.category)).map(o=>[o.id,o]));
+ s.serial=Math.max(data.serial||1,1,...s.walls.keys(),...s.objects.keys(),...s.parkingSlots.keys());
  s.yaw=Number.isFinite(data.camera?.yaw)?data.camera.yaw:Math.PI/4;
- s.elevation=Number.isFinite(data.camera?.elevation)?THREE.MathUtils.clamp(data.camera.elevation,THREE.MathUtils.degToRad(15),THREE.MathUtils.degToRad(82)):THREE.MathUtils.degToRad(52);
+ s.elevation=Number.isFinite(data.camera?.elevation)?THREE.MathUtils.clamp(data.camera.elevation,THREE.MathUtils.degToRad(15),THREE.MathUtils.degToRad(82)):THREE.MathUtils.degToRad(55);
  s.zoom=Number.isFinite(data.camera?.zoom)?THREE.MathUtils.clamp(data.camera.zoom,.45,5):1.15;
+ s.topViewRestore=null;$('topViewBtn').style.background='';
  s.target.set(data.camera?.target?.[0]??s.cols/2,0,data.camera?.target?.[1]??s.rows/2);
  s.selection=null;s.tool=null;s.moving=null;s.erase=false;
  $('gridSelect').value=`${s.cols}x${s.rows}`;$('app').classList.remove('building');rebuildAll();markSelected();clearGroup(ghostGroup);
 }
 async function openProject(file){
  if(!file)return;
- try{const content=await file.text();loadSnapshot(JSON.parse(content));$('projectName').value=file.name.replace(/\.(workfit|json)$/i,'');toast('프로젝트를 불러왔어요.');}
- catch(e){console.warn(e);toast('프로젝트를 읽을 수 없어요. WORKFIT V2.0 저장 파일인지 확인해 주세요.',true)}
+ try{const content=await file.text();loadSnapshot(JSON.parse(content));$('projectName').value=file.name.replace(/\.(workfit|json)$/i,'');s.currentProjectId=null;toast('PC 프로젝트 파일을 불러왔어요. 보관함에 남기려면 저장을 눌러 주세요.');}
+ catch(e){console.warn(e);toast('프로젝트를 읽을 수 없어요. WORKFIT V2.0 이상 저장 파일인지 확인해 주세요.',true)}
 }
 function selectGrid(v){
  const [a,b]=v.split('x').map(Number);
  if(s.floors.size>0&&!confirm('그리드 크기를 변경하면 현재 배치가 초기화됩니다. 계속할까요?')){$('gridSelect').value=`${s.cols}x${s.rows}`;return}
- s.cols=a;s.rows=b;s.floors.clear();s.walls.clear();s.objects.clear();s.serial=1;s.target.set(a/2,0,b/2);s.zoom=1.15;s.selection=null;s.tool=null;s.moving=null;$('app').classList.remove('building');rebuildAll();
+ s.cols=a;s.rows=b;s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.serial=1;s.target.set(a/2,0,b/2);s.zoom=1.15;s.selection=null;s.tool=null;s.moving=null;$('app').classList.remove('building');rebuildAll();
 }
 function pan(dx,dy){
  // Screen-right and screen-up vectors projected onto the factory ground.
@@ -696,7 +1235,7 @@ function onPointerUp(e){
  if(e.button===2&&!d.dragging){
     const now=Date.now();
     if(now-lastRightClick<380&&Math.hypot(e.clientX-lastRightAt.x,e.clientY-lastRightAt.y)<18){
-      s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(52);scheduleDraw();toast('기본 시점으로 복귀했어요. 위치와 확대 비율은 유지됩니다.');lastRightClick=0;
+      s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(55);scheduleDraw();toast('기본 시점으로 복귀했어요. 위치와 확대 비율은 유지됩니다.');lastRightClick=0;
     }else{lastRightClick=now;lastRightAt={x:e.clientX,y:e.clientY}}
  }
 }
@@ -709,6 +1248,13 @@ function onKeyDown(e){
    e.preventDefault();return;
  }
  const k=e.key.toLowerCase();
+ if(k==='r'){
+   const active=s.moving||s.tool;
+   if(active&&(active.kind==='parking'||(active.kind==='object'&&['vehicle','box','person'].includes(active.category)))){
+     active.rotation=((active.rotation||0)+1)%4;makeGhostGroup();scheduleDraw();
+     toast(`배치 방향 ${active.rotation*90}° · R로 계속 회전할 수 있어요.`);e.preventDefault();return;
+   }
+ }
  if(['w','a','s','d'].includes(k)){
    if(k==='w')pan(0,1);if(k==='s')pan(0,-1);if(k==='a')pan(-1,0);if(k==='d')pan(1,0);
    e.preventDefault();return;
@@ -718,64 +1264,84 @@ function onKeyDown(e){
 async function exportImage(kind='structure',resolution='3840'){
  if(s.exportPending)return;
  s.exportPending=true;
- const exportWidth=Number(resolution), exportHeight=Math.round(exportWidth*9/16);
- const oldSize=new THREE.Vector2();renderer.getSize(oldSize);const oldPixelRatio=renderer.getPixelRatio();
- const oldSceneBackground=scene.background;const baseVisible=staticGroup.visible,objectsVisible=objectGroup.visible,ghostVisible=ghostGroup.visible,highlightVisible=highlightGroup.visible;
- const oldZoom=s.zoom, oldTarget=s.target.clone(), oldCameraPos=camera.position.clone();
+ const exportWidth=Number(resolution),exportHeight=Math.round(exportWidth*9/16);
+ const oldSize=new THREE.Vector2();renderer.getSize(oldSize);
+ const oldPixelRatio=renderer.getPixelRatio();
+ const oldSceneBackground=scene.background;
+ const baseVisible=staticGroup.visible,objectsVisible=objectGroup.visible;
+ const ghostVisible=ghostGroup.visible,highlightVisible=highlightGroup.visible;
  try{
    staticGroup.visible=kind==='scene';
    objectGroup.visible=kind==='scene';
    ghostGroup.visible=false;highlightGroup.visible=false;
    scene.background=kind==='structure'?null:new THREE.Color('#f8fafc');
    renderer.setClearColor(kind==='structure'?0xffffff:0xf8fafc,kind==='structure'?0:1);
-   renderer.setPixelRatio(1);renderer.setSize(exportWidth,exportHeight,false);
-   let viewHeight=Math.hypot(s.cols,s.rows)*1.28/s.zoom;
+   renderer.setPixelRatio(1);
+   renderer.setSize(exportWidth,exportHeight,false);
+   const aspect=exportWidth/exportHeight;
+   camera.aspect=aspect;
+   camera.fov=CAMERA_FOV;
+   camera.updateProjectionMatrix();
    if(kind==='structure'&&s.floors.size){
-     // Automatically frame only the constructed factory, not the unused 44x44 workspace.
      let minX=Infinity,minZ=Infinity,maxX=-Infinity,maxZ=-Infinity;
      for(const k of s.floors.keys()){
        const [x,z]=k.split(':').map(Number);
-       minX=Math.min(minX,x);minZ=Math.min(minZ,z);maxX=Math.max(maxX,x+1);maxZ=Math.max(maxZ,z+1);
+       minX=Math.min(minX,x);minZ=Math.min(minZ,z);
+       maxX=Math.max(maxX,x+1);maxZ=Math.max(maxZ,z+1);
      }
-     const mid=new THREE.Vector3((minX+maxX)/2,0,(minZ+maxZ)/2);
-     const shift=mid.clone().sub(oldTarget);
-     camera.position.copy(oldCameraPos).add(shift);
-     camera.lookAt(mid);
-     viewHeight=Math.hypot(maxX-minX+2,maxZ-minZ+2)*1.26;
+     // One consistent camera angle for the entire scene, including a 2m tall wall.
+     const mid=new THREE.Vector3((minX+maxX)/2,1,(minZ+maxZ)/2);
+     const bounds={minX,minZ,maxX,maxZ,minY:0,maxY:2.2};
+     aimCamera(mid,fitPerspectiveDistance(mid,bounds,aspect));
+   }else{
+     aimCamera(s.target,getSceneDistance());
    }
-   camera.left=-viewHeight*(exportWidth/exportHeight)/2;camera.right=viewHeight*(exportWidth/exportHeight)/2;camera.top=viewHeight/2;camera.bottom=-viewHeight/2;camera.updateProjectionMatrix();
-   camera.updateMatrixWorld();
    renderer.render(scene,camera);
    const blob=await new Promise((resolve,reject)=>renderer.domElement.toBlob(b=>b?resolve(b):reject(new Error('PNG generation failed')),'image/png'));
    saveBlob(`${getProjectName()}_${kind==='structure'?'건물구조_투명배경':'전체배치'}_${exportWidth}x${exportHeight}.png`,blob);
-   toast('PNG 파일 저장을 요청했어요. 브라우저 다운로드 목록을 확인해 주세요.');
- }catch(e){console.warn('Export failed',e);toast('고해상도 출력이 실패했어요. 1920px 해상도로 다시 시도해 주세요.',true)}
- finally{
-   staticGroup.visible=baseVisible;objectGroup.visible=objectsVisible;ghostGroup.visible=ghostVisible;highlightGroup.visible=highlightVisible;
+   toast('PNG 저장을 요청했어요. 브라우저 다운로드 목록을 확인해 주세요.');
+ }catch(e){
+   console.warn('Export failed',e);
+   toast('고해상도 출력이 실패했어요. 1920px로 다시 시도해 주세요.',true);
+ }finally{
+   staticGroup.visible=baseVisible;objectGroup.visible=objectsVisible;
+   ghostGroup.visible=ghostVisible;highlightGroup.visible=highlightVisible;
    scene.background=oldSceneBackground;
-   renderer.setClearColor(0xe8eef5,1);renderer.setPixelRatio(oldPixelRatio);renderer.setSize(oldSize.x,oldSize.y,false);
-   s.zoom=oldZoom;s.target.copy(oldTarget);rebuildCamera();renderer.render(scene,camera);s.exportPending=false;scheduleDraw();
+   renderer.setClearColor(0xe8eef5,1);
+   renderer.setPixelRatio(oldPixelRatio);
+   renderer.setSize(oldSize.x,oldSize.y,false);
+   rebuildCamera();renderer.render(scene,camera);
+   s.exportPending=false;scheduleDraw();
  }
 }
 function wireUI(){
- $('saveBtn').onclick=saveProject;
- $('openBtn').onclick=()=>$('filePicker').click();
+ $('saveBtn').onclick=()=>saveToLibrary(false);
+ $('openBtn').onclick=async()=>{$('projectDialog').showModal();await renderProjectLibrary()};
+ $('closeProjectBtn').onclick=()=>$('projectDialog').close();
+ $('newProjectBtn').onclick=newBlankProject;
+ $('saveCopyBtn').onclick=()=>saveToLibrary(true);
+ $('importProjectBtn').onclick=()=>$('filePicker').click();
+ $('backupAllBtn').onclick=exportLibraryBackup;
+ $('restoreBackupBtn').onclick=()=>$('backupPicker').click();
+ $('backupPicker').onchange=e=>{importLibraryBackup(e.target.files[0]);e.target.value=''};
  $('filePicker').onchange=e=>{openProject(e.target.files[0]);e.target.value=''};
  $('pngBtn').onclick=()=>{$('exportDialog').showModal()};
  $('exportClose').onclick=()=>$('exportDialog').close();
  $('exportConfirm').onclick=()=>{const kind=document.querySelector('input[name=exportType]:checked').value;const res=$('exportResolution').value;$('exportDialog').close();exportImage(kind,res)};
  $('gridSelect').onchange=e=>selectGrid(e.target.value);
+ $('brushSelect').onchange=e=>{s.brushSize=Number(e.target.value);makeGhostGroup();scheduleDraw();toast(s.category==='wall'?`벽 ${s.brushSize}칸 연속 배치`:`바닥 ${s.brushSize}×${s.brushSize} (${s.brushSize*s.brushSize}칸) 배치`)};
  document.querySelectorAll('[data-category]').forEach(b=>b.onclick=()=>setCategory(b.dataset.category));
  $('eraseBtn').onclick=()=>setBuildMode('erase');
- $('resetBtn').onclick=()=>{if(confirm('배치된 바닥과 벽, 설치물을 모두 지울까요?')){s.floors.clear();s.walls.clear();s.objects.clear();s.selection=null;s.moving=null;s.tool=null;$('app').classList.remove('building');rebuildAfterEdit()}};
+ $('resetBtn').onclick=()=>{if(confirm('배치된 바닥과 벽, 설치물을 모두 지울까요?')){s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();s.selection=null;s.moving=null;s.tool=null;$('app').classList.remove('building');rebuildAfterEdit()}};
  $('undoBtn').onclick=undo;
  $('exitBtn').onclick=exitBuild;
  $('rotateLeft').onclick=()=>rotateSelection(-1);
  $('rotateRight').onclick=()=>rotateSelection(1);
  $('removeBtn').onclick=()=>removeEntity(s.selection);
  $('zoomIn').onclick=()=>zoomBy(1.22);$('zoomOut').onclick=()=>zoomBy(1/1.22);
- $('resetView').onclick=()=>{s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(52);scheduleDraw()};
- $('fitBtn').onclick=()=>{s.target.set(s.cols/2,0,s.rows/2);s.zoom=1.15;s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(52);scheduleDraw()};
+ $('resetView').onclick=()=>{s.topViewRestore=null;s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(55);scheduleDraw()};
+ $('topViewBtn').onclick=()=>{if(s.topViewRestore){s.yaw=s.topViewRestore.yaw;s.elevation=s.topViewRestore.elevation;s.topViewRestore=null;$('topViewBtn').style.background='';}else{s.topViewRestore={yaw:s.yaw,elevation:s.elevation};s.yaw=0;s.elevation=THREE.MathUtils.degToRad(89.95);$('topViewBtn').style.background='#cce3fc';}scheduleDraw()};
+ $('fitBtn').onclick=()=>{s.topViewRestore=null;$('topViewBtn').style.background='';s.target.set(s.cols/2,0,s.rows/2);s.zoom=1.15;s.yaw=Math.PI/4;s.elevation=THREE.MathUtils.degToRad(55);scheduleDraw()};
  canvas.addEventListener('contextmenu',e=>e.preventDefault());
  canvas.addEventListener('pointerdown',onPointerDown);
  canvas.addEventListener('pointermove',onPointerMove);
@@ -802,6 +1368,16 @@ function addSample(){
  }
  const id=++s.serial;s.objects.set(id,{id,x:x+3,z:z+3,category:'box',variant:'medium',rotation:0});
  const id2=++s.serial;s.objects.set(id2,{id:id2,x:x+6,z:z+4,category:'vehicle',variant:'forklift',rotation:1});
+ for(let i=0;i<3;i++)for(let j=6;j<8;j++)s.floors.set(tileKey(x+i,z+j),'green');
+ const rackId=++s.serial;s.objects.set(rackId,{id:rackId,x:x+1,z:z+1,category:'box',variant:'rackLarge',rotation:0});
+ const personId=++s.serial;s.objects.set(personId,{id:personId,x:x+5,z:z+1,category:'person',variant:'cleanOrange',rotation:0});
+ const inspectorId=++s.serial;s.objects.set(inspectorId,{id:inspectorId,x:x+8,z:z+6,category:'person',variant:'inspector',rotation:1});
+ for(const [px,pz,rotation] of [[x+4,z+4,0],[x+7,z+4,0]]){
+   const id=++s.serial,slot={id,x:px,z:pz,rotation};s.parkingSlots.set(id,slot);
+   for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');
+ }
+ const carId=++s.serial;s.objects.set(carId,{id:carId,x:x+4,z:z+4,category:'vehicle',variant:'passenger',rotation:0});
+ const truckId=++s.serial;s.objects.set(truckId,{id:truckId,x:x+7,z:z+4,category:'vehicle',variant:'cart',rotation:0});
 }
 try{
   addSample();rebuildAll();setCategory('floor');wireUI();
@@ -809,15 +1385,23 @@ try{
   updateStatus();scheduleDraw();
   // Simple public diagnostics for automated testing. No private data.
   window.WORKFIT_TEST={
-   getState:()=>({cols:s.cols,rows:s.rows,floors:s.floors.size,walls:s.walls.size,objects:s.objects.size,yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:s.target.toArray()}),
+   getState:()=>({projection:'perspective',cameraFov:CAMERA_FOV,cols:s.cols,rows:s.rows,floors:s.floors.size,parking:s.parkingSlots.size,walls:s.walls.size,objects:s.objects.size,brushSize:s.brushSize,projectId:s.currentProjectId,yaw:s.yaw,elevation:s.elevation,zoom:s.zoom,target:s.target.toArray()}),
    selectGrid:v=>selectGrid(v),beginBuild:(cat,type)=>beginBuild(cat,type),
-   addFloor:(x,z,type='basic')=>{s.floors.set(tileKey(x,z),type);rebuildAfterEdit()},
+   addFloor:(x,z,type='basic')=>{if(type==='parking'){if(!canPlaceParking(x,z,0))throw Error('parking placement invalid');const id=++s.serial,slot={id,x,z,rotation:0};s.parkingSlots.set(id,slot);for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking')}else{s.floors.set(tileKey(x,z),type)}rebuildAfterEdit()},
+   addParking:(x,z,rotation=0)=>{if(!canPlaceParking(x,z,rotation))return false;const id=++s.serial,slot={id,x,z,rotation};s.parkingSlots.set(id,slot);for(const c of parkingCells(slot))s.floors.set(tileKey(c.x,c.z),'parking');rebuildAfterEdit();return id},
+   addObject:(x,z,category,variant,rotation=0)=>{const a={kind:'object',category,variant,rotation};if(!canPlace(a,{x,z},null))return false;const id=++s.serial;s.objects.set(id,{id,x,z,category,variant,rotation});rebuildAfterEdit();return id},
+   addVehicle:(x,z,variant='truck',rotation=0)=>{const v={kind:'object',category:'vehicle',variant,rotation};if(!canPlace(v,{x,z},null))return false;const id=++s.serial;s.objects.set(id,{id,x,z,category:'vehicle',variant,rotation});rebuildAfterEdit();return id},
+   footprint:(x,z,variant,rotation=0)=>footprintCells(x,z,'vehicle',variant,rotation),
+   storageFootprint:(x,z,variant,rotation=0)=>footprintCells(x,z,'box',variant,rotation),
+   availableCategories:()=>Object.keys(ITEMS),assetNames:(cat)=>ITEMS[cat]?.map(v=>v.label)||[],
+   parkingSlots:()=>[...s.parkingSlots.values()],
+   checkPlacement:(x,z,variant,rotation=0)=>canPlace({kind:'object',category:'vehicle',variant,rotation},{x,z},null),
    addWall:(x,z,side,type='plain')=>{const id=++s.serial;s.walls.set(id,{id,x,z,baseSide:side,turn:0,type});rebuildAfterEdit();return id},
    entityRotation:(id,dir)=>{s.selection={kind:'wall',id};rotateSelection(dir)},
-   save:snapshotData,
+   floorArea:(x,z,n)=>floorBrushArea({x,z},n),wallBrush:(x,z,side,n)=>wallBrushSegments({x,z},{side,edge:edgeFor(x,z,side)},n),listProjects:listLibrary,saveToLibrary,save:snapshotData,
    load:loadSnapshot,
    export:exportImage,
-   clear:()=>{s.floors.clear();s.walls.clear();s.objects.clear();rebuildAfterEdit()}
+   clear:()=>{s.floors.clear();s.parkingSlots.clear();s.walls.clear();s.objects.clear();rebuildAfterEdit()}
   };
 }catch(err){
  console.error('WORKFIT initialization failed',err);
